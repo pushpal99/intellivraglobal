@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="og-title">
+  <title id="og-title">Intellivra Global - IT staffing and consulting. Pre-vetted engineering talent, delivered in days.</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070B14"/>
+      <stop offset="1" stop-color="#0C1426"/>
+    </linearGradient>
+    <radialGradient id="glow-a" cx="0.82" cy="0.05" r="0.7">
+      <stop offset="0" stop-color="#6C8CFF" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#6C8CFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow-b" cx="0.05" cy="0.95" r="0.6">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6C8CFF"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="accent-text" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9DB2FF"/>
+      <stop offset="1" stop-color="#67E8F9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#070B14"/>
+  <rect width="1200" height="630" fill="url(#glow-a)"/>
+  <rect width="1200" height="630" fill="url(#glow-b)"/>
+
+  <g stroke="#1B2438" stroke-width="1" opacity="0.75">
+    <path d="M0 158h1200M0 315h1200M0 472h1200M300 0v630M600 0v630M900 0v630"/>
+  </g>
+
+  <g transform="translate(80 78)">
+    <rect width="64" height="64" rx="18" fill="url(#mark)"/>
+    <path d="M20 22v20M29 30v12M38 18v24M46 27v15" stroke="#05070E" stroke-width="5" stroke-linecap="round" opacity="0.88"/>
+    <text x="86" y="43" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#E8EDF9" letter-spacing="-0.5">Intellivra <tspan fill="#9DB2FF" font-weight="400">Global</tspan></text>
+  </g>
+
+  <text x="80" y="300" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2.4" fill="#E8EDF9">IT staffing and consulting</text>
+  <text x="80" y="382" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2.4" fill="url(#accent-text)">for teams that ship.</text>
+
+  <text x="80" y="446" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="27" font-weight="400" fill="#A6B1CB">Pre-vetted engineering talent, delivered in days.</text>
+
+  <g transform="translate(80 512)" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#7C88A4">
+    <circle cx="6" cy="-6" r="5" fill="#6C8CFF"/>
+    <text x="24" y="0">Staff augmentation</text>
+    <circle cx="256" cy="-6" r="5" fill="#6C8CFF"/>
+    <text x="274" y="0">AI &amp; data engineering</text>
+    <circle cx="546" cy="-6" r="5" fill="#6C8CFF"/>
+    <text x="564" y="0">Cloud &amp; DevOps</text>
+  </g>
+
+  <text x="80" y="580" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" fill="#9DB2FF">intellivraglobal.com</text>
+
+  <g transform="translate(905 300)" opacity="0.9">
+    <circle r="150" fill="none" stroke="#1B2438" stroke-width="1.5"/>
+    <circle r="105" fill="none" stroke="#22314F" stroke-width="1.5"/>
+    <circle r="60" fill="none" stroke="#2A3550" stroke-width="1.5"/>
+    <circle r="14" fill="url(#mark)"/>
+    <g fill="#9DB2FF">
+      <circle cx="0" cy="-150" r="7"/>
+      <circle cx="130" cy="75" r="7"/>
+      <circle cx="-130" cy="75" r="7"/>
+      <circle cx="74" cy="-74" r="5" fill="#67E8F9"/>
+      <circle cx="-95" cy="-45" r="5" fill="#67E8F9"/>
+      <circle cx="30" cy="105" r="5" fill="#67E8F9"/>
+    </g>
+    <g stroke="#33415C" stroke-width="1.25">
+      <path d="M0 0L0 -150M0 0L130 75M0 0L-130 75M0 0L74 -74M0 0L-95 -45M0 0L30 105"/>
+    </g>
+  </g>
+</svg>

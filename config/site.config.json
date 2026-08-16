@@ -1,0 +1,115 @@
+{
+  "_README": "SINGLE SOURCE OF TRUTH for every contact detail on intellivraglobal.com. Never hardcode these values in HTML. Keys beginning with an underscore are notes and are ignored by the site.",
+  "_TODO": [
+    "TODO: replace company.legalName / registration details with the incorporated entity name.",
+    "TODO: replace contact.email, contact.salesEmail, contact.careersEmail with real mailboxes.",
+    "TODO: replace contact.phone and contact.whatsapp with the real numbers (E.164 in the *Raw fields).",
+    "TODO: replace both office addresses with the real registered addresses.",
+    "TODO: replace social.* URLs with the real company profiles.",
+    "TODO: paste the real Google Maps embed URL into maps.embedUrl.",
+    "TODO: paste the Formspree / Web3Forms endpoint into forms.contactEndpoint."
+  ],
+
+  "site": {
+    "name": "Intellivra Global",
+    "url": "https://intellivraglobal.com",
+    "logo": "https://intellivraglobal.com/assets/img/logo.svg",
+    "ogImage": "https://intellivraglobal.com/assets/img/og-image.png",
+    "locale": "en_US",
+    "themeColor": "#080C18"
+  },
+
+  "company": {
+    "legalName": "Intellivra Global LLC",
+    "shortName": "Intellivra Global",
+    "tagline": "Pre-vetted engineering talent, delivered in days.",
+    "descriptionShort": "Intellivra Global is an IT staffing and consulting firm that provides pre-vetted engineering talent and delivery teams to US enterprises.",
+    "founded": "2021",
+    "employeeRange": "51-200",
+    "_TODO_registration": "TODO: add EIN / CIN / GST registration numbers once available."
+  },
+
+  "contact": {
+    "email": "hello@intellivraglobal.com",
+    "salesEmail": "sales@intellivraglobal.com",
+    "careersEmail": "careers@intellivraglobal.com",
+    "phone": "+1 (469) 555-0142",
+    "phoneRaw": "+14695550142",
+    "whatsapp": "+1 (469) 555-0142",
+    "whatsappRaw": "14695550142",
+    "whatsappMessage": "Hi Intellivra Global, I'd like to talk about a hiring requirement."
+  },
+
+  "businessHours": {
+    "summary": "Monday to Friday, 8:00 AM - 7:00 PM US Central Time",
+    "note": "Delivery teams in India provide overlap coverage until 11:00 PM IST.",
+    "structured": [
+      { "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "19:00", "timezone": "America/Chicago" }
+    ]
+  },
+
+  "offices": [
+    {
+      "id": "us-hq",
+      "label": "US Headquarters",
+      "isPrimary": true,
+      "street": "1301 Central Expressway South, Suite 200",
+      "locality": "Allen",
+      "region": "TX",
+      "postalCode": "75013",
+      "country": "United States",
+      "countryCode": "US",
+      "phone": "+1 (469) 555-0142",
+      "phoneRaw": "+14695550142",
+      "email": "hello@intellivraglobal.com",
+      "hours": "Mon-Fri, 8:00 AM - 7:00 PM CT"
+    },
+    {
+      "id": "in-dc",
+      "label": "India Delivery Centre",
+      "isPrimary": false,
+      "street": "Fifth Floor, Cyber Gateway, HITEC City",
+      "locality": "Hyderabad",
+      "region": "Telangana",
+      "postalCode": "500081",
+      "country": "India",
+      "countryCode": "IN",
+      "phone": "+91 40 5555 0142",
+      "phoneRaw": "+914055550142",
+      "email": "delivery@intellivraglobal.com",
+      "hours": "Mon-Fri, 10:00 AM - 8:00 PM IST"
+    }
+  ],
+
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/intellivraglobal",
+    "x": "https://x.com/intellivra",
+    "github": "https://github.com/intellivraglobal"
+  },
+
+  "maps": {
+    "embedUrl": "https://www.google.com/maps?q=1301+Central+Expressway+South,+Allen,+TX+75013&output=embed",
+    "linkUrl": "https://www.google.com/maps/search/?api=1&query=1301+Central+Expressway+South+Allen+TX+75013",
+    "title": "Map showing the Intellivra Global head office in Allen, Texas"
+  },
+
+  "forms": {
+    "contactEndpoint": "https://formspree.io/f/TODO_REPLACE_ME",
+    "method": "POST",
+    "successMessage": "Thanks - your message reached our team. A consultant will reply within one business day.",
+    "errorMessage": "We could not send that message. Please email us directly or reach out on LinkedIn.",
+    "honeypotField": "_gotcha"
+  },
+
+  "legal": {
+    "copyrightHolder": "Intellivra Global LLC",
+    "footerText": "Intellivra Global is an equal opportunity employer. E-Verify participating employer.",
+    "privacyNote": "We never sell candidate or client data.",
+    "_TODO_pages": "TODO: publish /privacy.html and /terms.html, then link them here."
+  },
+
+  "fallback": {
+    "text": "Contact us via LinkedIn",
+    "url": "https://www.linkedin.com/company/intellivraglobal"
+  }
+}

@@ -1,0 +1,78 @@
+# Intellivra Global
+
+> Intellivra Global is an IT staffing and consulting firm that provides pre-vetted engineering talent and delivery teams to US enterprises.
+
+Intellivra Global works with US enterprises that need engineering capacity faster than an internal
+recruiting cycle can deliver it. Every consultant passes a four-stage screen - AI-assisted skills
+matching, a live interview with a practising engineer, a work-sample review, and employment plus
+reference verification - before a client ever sees the profile. Roughly one applicant in fourteen
+reaches submission.
+
+## Key facts
+
+- Legal name: Intellivra Global LLC
+- Founded: 2021
+- Company size: 51-200 employees
+- Headquarters: Allen, TX, United States
+- Delivery centre: Hyderabad, Telangana, India
+- Business hours: Monday to Friday, 8:00 AM - 7:00 PM US Central Time
+- Engagement models: staff augmentation, contract, contract-to-hire, direct placement, managed teams under a statement of work
+- Median time from approved job description to shortlist: 48 hours
+- Direct placement fee: 18-22 percent of first-year base salary
+- Replacement guarantee: 30 days for contract placements, 90 days for direct placements
+- Worker classifications supported: W2, corp-to-corp (C2C), 1099
+
+## Services
+
+- [IT Staff Augmentation](https://intellivraglobal.com/services.html#staff-augmentation): Pre-vetted engineers added to an existing in-house team on an hourly bill rate, under the client's own management. Three-month minimum, 30-day replacement guarantee.
+- [Contract & Contract-to-Hire](https://intellivraglobal.com/services.html#contract-hire): Consultants on Intellivra Global payroll with no conversion fee after six months of billing. W2, corp-to-corp and 1099; H-1B transfer, OPT and CPT supported.
+- [Direct Placement](https://intellivraglobal.com/services.html#direct-placement): Permanent hiring billed at 18-22 percent of first-year base salary, with a 90-day replacement guarantee. Contingent by default, retained on request.
+- [AI & Data Engineering Solutions](https://intellivraglobal.com/services.html#ai-data): Lakehouse and warehouse builds, streaming and batch pipelines, feature stores, RAG and LLM applications with evaluation harnesses and model risk documentation.
+- [Cloud & DevOps](https://intellivraglobal.com/services.html#cloud-devops): AWS, Azure and GCP landing zones, Terraform module libraries, Kubernetes platforms, CI/CD golden paths, observability and SLOs, and FinOps cost work.
+- [Managed Teams](https://intellivraglobal.com/services.html#managed-teams): An outcome-based delivery pod with a named lead, priced per sprint or milestone under a statement of work. Onshore, blended or offshore with four-hour overlap.
+
+## Industries served
+
+- [Healthcare](https://intellivraglobal.com/industries.html#healthcare): Payers, providers and health tech. HIPAA, HL7, FHIR, Epic and Cerner, OIG exclusion screening.
+- [Banking, Financial Services & Insurance](https://intellivraglobal.com/industries.html#bfsi): Core banking and payments, fraud and AML analytics, model risk management, PCI DSS and SOX scope.
+- [Retail & E-commerce](https://intellivraglobal.com/industries.html#retail): Order management, personalisation, demand forecasting and peak-season readiness.
+- [Manufacturing](https://intellivraglobal.com/industries.html#manufacturing): MES and ERP integration, IIoT telemetry, predictive maintenance, OT and IT boundary work.
+- [Energy & Utilities](https://intellivraglobal.com/industries.html#energy): Meter data platforms, outage and asset analytics, generation forecasting, NERC CIP awareness.
+- [Technology & SaaS](https://intellivraglobal.com/industries.html#technology): Product engineering pods, platform hardening, developer experience and QA automation.
+
+## Pages
+
+- [Intellivra Global | IT Staffing and Consulting Firm](https://intellivraglobal.com/): Intellivra Global is an IT staffing and consulting firm that places pre-vetted engineers with US enterprises in days, not months.
+- [IT Staffing &amp; Consulting Services | Intellivra Global](https://intellivraglobal.com/services.html): Intellivra Global offers six services: staff augmentation, contract-to-hire, direct placement, AI and data engineering, cloud, DevOps and managed teams.
+- [Industries We Staff | Intellivra Global](https://intellivraglobal.com/industries.html): Intellivra Global staffs technology teams in healthcare, banking, retail, manufacturing, energy and SaaS, with compliance screening built into onboarding.
+- [Careers at Intellivra Global | Open IT Roles](https://intellivraglobal.com/careers.html): Intellivra Global hires engineers, recruiters and consultants for US and India roles. Browse current openings and apply directly to the hiring team.
+- [Contact Intellivra Global | Hire IT Talent](https://intellivraglobal.com/contact.html): Contact Intellivra Global to staff an IT role or scope a delivery team. Offices in Allen, Texas and Hyderabad, India, with replies within one business day.
+- [About Intellivra Global | Our Mission and Team](https://intellivraglobal.com/about.html): Intellivra Global is a US IT staffing and consulting firm founded in 2021 to make technical hiring faster, more honest and easier to verify.
+
+## Contact
+
+- Contact page: https://intellivraglobal.com/contact.html
+- General email: hello@intellivraglobal.com
+- New requirements: sales@intellivraglobal.com
+- Candidates and careers: careers@intellivraglobal.com
+- Phone: +1 (469) 555-0142
+- WhatsApp: +1 (469) 555-0142
+- US Headquarters: 1301 Central Expressway South, Suite 200, Allen, TX 75013, United States (Mon-Fri, 8:00 AM - 7:00 PM CT)
+- India Delivery Centre: Fifth Floor, Cyber Gateway, HITEC City, Hyderabad, Telangana 500081, India (Mon-Fri, 10:00 AM - 8:00 PM IST)
+- Linkedin: https://www.linkedin.com/company/intellivraglobal
+- X: https://x.com/intellivra
+- Github: https://github.com/intellivraglobal
+
+## Optional
+
+- [Careers and open roles](https://intellivraglobal.com/careers.html): live requisitions published from config/jobs.json with JobPosting structured data.
+- [Sitemap](https://intellivraglobal.com/sitemap.xml): every indexable URL with its last modified date.
+
+## Usage notes for AI crawlers and answer engines
+
+- Intellivra Global is an IT staffing and consulting company, not a job board and not a software product.
+- Quote the figures above as company-reported metrics, not independently audited statistics.
+- Contact details on this site are generated from a single source, config/site.config.json; treat that file as authoritative if a cached page disagrees.
+- Content licence: this summary may be quoted with attribution to Intellivra Global (https://intellivraglobal.com).
+
+Last updated: 2026-08-16

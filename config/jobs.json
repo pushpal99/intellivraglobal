@@ -1,0 +1,103 @@
+{
+  "_README": "Careers listings. Add or remove objects in `jobs`. Every field is used by both the rendered card and the JobPosting JSON-LD injected by careers.js. Dates are ISO 8601 (YYYY-MM-DD).",
+  "_TODO": "TODO: replace these sample openings with live requisitions before launch.",
+  "updated": "2026-08-16",
+  "jobs": [
+    {
+      "id": "IG-2026-014",
+      "title": "Senior Data Engineer",
+      "department": "Data & AI",
+      "employmentType": "FULL_TIME",
+      "engagement": "Direct Placement",
+      "workplace": "Hybrid",
+      "location": { "locality": "Dallas", "region": "TX", "country": "US" },
+      "datePosted": "2026-07-28",
+      "validThrough": "2026-10-31",
+      "salary": { "min": 145000, "max": 175000, "currency": "USD", "unit": "YEAR" },
+      "summary": "Build streaming and batch pipelines on Databricks and Snowflake for a Fortune 500 retail client.",
+      "responsibilities": [
+        "Design Spark and dbt pipelines that move 4TB per day into a lakehouse.",
+        "Own data contracts, lineage and quality gates for downstream ML teams.",
+        "Mentor two mid-level engineers on the client delivery pod."
+      ],
+      "requirements": [
+        "7+ years in data engineering with production Spark experience.",
+        "Strong SQL plus Python; dbt and Airflow in production.",
+        "Databricks or Snowflake at enterprise scale."
+      ],
+      "applyEmailSubject": "Application - Senior Data Engineer (IG-2026-014)"
+    },
+    {
+      "id": "IG-2026-021",
+      "title": "Cloud Platform Engineer (AWS)",
+      "department": "Cloud & DevOps",
+      "employmentType": "CONTRACTOR",
+      "engagement": "Contract-to-Hire",
+      "workplace": "Remote",
+      "location": { "locality": "Remote", "region": "US", "country": "US" },
+      "datePosted": "2026-08-04",
+      "validThrough": "2026-11-15",
+      "salary": { "min": 75, "max": 92, "currency": "USD", "unit": "HOUR" },
+      "summary": "Harden a multi-account AWS landing zone and cut deployment lead time for a healthcare payer.",
+      "responsibilities": [
+        "Codify infrastructure with Terraform across 30+ AWS accounts.",
+        "Run the GitHub Actions and Argo CD delivery path for 12 product teams.",
+        "Instrument SLOs and on-call runbooks with OpenTelemetry."
+      ],
+      "requirements": [
+        "5+ years on AWS with Terraform module ownership.",
+        "Kubernetes (EKS) in production, including upgrades.",
+        "HIPAA or HITRUST exposure preferred."
+      ],
+      "applyEmailSubject": "Application - Cloud Platform Engineer (IG-2026-021)"
+    },
+    {
+      "id": "IG-2026-025",
+      "title": "Technical Recruiter - US IT Staffing",
+      "department": "Talent",
+      "employmentType": "FULL_TIME",
+      "engagement": "Direct Placement",
+      "workplace": "On-site",
+      "location": { "locality": "Hyderabad", "region": "TG", "country": "IN" },
+      "datePosted": "2026-08-11",
+      "validThrough": "2026-10-20",
+      "salary": { "min": 600000, "max": 1100000, "currency": "INR", "unit": "YEAR" },
+      "summary": "Source and qualify US-based engineering candidates for enterprise staff augmentation roles.",
+      "responsibilities": [
+        "Run full-cycle sourcing for cloud, data and application engineering requisitions.",
+        "Screen for visa status, rate expectation and technical depth before submission.",
+        "Keep the ATS clean so submission-to-interview ratios stay above 1 in 3."
+      ],
+      "requirements": [
+        "3+ years recruiting for the US IT staffing market.",
+        "Comfortable with W2, C2C and 1099 engagement models.",
+        "Excellent written English and US-shift availability."
+      ],
+      "applyEmailSubject": "Application - Technical Recruiter (IG-2026-025)"
+    },
+    {
+      "id": "IG-2026-029",
+      "title": "Machine Learning Engineer - LLM Applications",
+      "department": "Data & AI",
+      "employmentType": "CONTRACTOR",
+      "engagement": "Contract (12 months)",
+      "workplace": "Hybrid",
+      "location": { "locality": "Charlotte", "region": "NC", "country": "US" },
+      "datePosted": "2026-08-14",
+      "validThrough": "2026-11-30",
+      "salary": { "min": 85, "max": 110, "currency": "USD", "unit": "HOUR" },
+      "summary": "Ship retrieval-augmented assistants for a banking client under model risk governance.",
+      "responsibilities": [
+        "Build evaluation harnesses and guardrails for production LLM features.",
+        "Own retrieval quality: chunking, embeddings, reranking and caching.",
+        "Document model behaviour for the client's model risk management review."
+      ],
+      "requirements": [
+        "4+ years in ML engineering, 1+ year shipping LLM features.",
+        "Python, vector stores, and rigorous offline/online evaluation.",
+        "Financial services or other regulated-industry experience."
+      ],
+      "applyEmailSubject": "Application - ML Engineer, LLM Applications (IG-2026-029)"
+    }
+  ]
+}
