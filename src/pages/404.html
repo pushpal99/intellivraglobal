@@ -1,0 +1,31 @@
+<!--meta
+{
+  "id": "404",
+  "output": "404.html",
+  "title": "Page Not Found | {{company.short_name}}",
+  "description": "This {{company.short_name}} page could not be found. Use the links below to reach our services, industries, about or contact pages.",
+  "twitter_description": "That page could not be found.",
+  "schema_type": "WebPage",
+  "noindex": true,
+  "no_schema": true
+}
+-->
+<section class="wrap notfound" aria-labelledby="page-title">
+  <p class="code" aria-hidden="true">404</p>
+  <h1 id="page-title">We could not find that page</h1>
+  <p>
+    The link may be out of date, or the page may have moved. Everything
+    {{ company.short_name }} publishes is reachable from the pages below.
+  </p>
+  <div class="btn-row">
+    <a class="btn btn--primary" href="/">Back to the homepage</a>
+    <a class="btn btn--secondary" href="/contact.html">Contact our team</a>
+  </div>
+  <nav class="notfound-links" aria-label="Popular pages">
+    <a class="tag" href="/services.html">Services</a>
+    <a class="tag" href="/services.html#staff-augmentation">Staff augmentation</a>
+    <a class="tag" href="/industries.html">Industries</a>
+    <a class="tag" href="/about.html">About</a>
+    <a class="tag" href="/search.html">Search</a>
+  </nav>
+</section>

@@ -1,282 +1,297 @@
 # Intellivra Global — marketing site
 
-Static marketing site for **intellivraglobal.com**: plain HTML, CSS and vanilla JavaScript.
-No framework, no bundler, no build step. Open `index.html` in a browser and it works.
+Static marketing site for **intellivraglobal.com**. Plain HTML, CSS and vanilla JavaScript,
+generated from a single YAML config by a small Node build step, deployed to Netlify by GitHub
+Actions. The contact form is delivered by a Netlify serverless function.
+
+> **To change any contact or company info, edit `config/site.yaml` and rebuild.**
+> Nothing is hardcoded in the templates.
 
 ```
 INTELLIVRAGLOBAL/
-├── index.html              Home
-├── services.html           Six service lines, one anchored section each
-├── industries.html         Six industries
-├── about.html              Mission, leadership, why "Intellivra"
-├── careers.html            Openings rendered from config/jobs.json
-├── contact.html            Form + contact details + map
-├── search.html             Site search (noindex; backs the SearchAction schema)
-├── 404.html                Not-found page
-├── llms.txt                Machine-readable company summary for AI crawlers
-├── robots.txt              Explicitly allows GPTBot, ClaudeBot, PerplexityBot, CCBot…
-├── sitemap.xml             Generated; all indexable URLs with lastmod
-├── config/
-│   ├── site.config.json    ← ALL contact details live here. Nothing else.
-│   └── jobs.json           ← Careers listings
-├── assets/
-│   ├── css/critical.css    Canonical copy of the CSS inlined in every <head>
-│   ├── css/main.css        Everything below the fold
-│   ├── js/config-loader.js Reads site.config.json → populates data-config elements
-│   ├── js/main.js          Mobile nav + footer year
-│   ├── js/careers.js       Renders jobs.json + JobPosting JSON-LD
-│   ├── js/contact.js       Posts the form to the configured endpoint
-│   ├── js/search.js        Client-side site search
-│   └── img/                Logo, favicons, OG image, client-logo placeholders
-└── tools/                  serve.js (local dev server) + optional maintenance scripts
+├── config/site.yaml            ← SINGLE SOURCE OF TRUTH (company, contact, services, FAQs)
+├── build.js                    ← reads the YAML, writes dist/
+├── src/
+│   ├── pages/*.html            page templates ({{ tokens }} + a <!--meta--> block)
+│   ├── partials/               header.html, footer.html
+│   └── assets/                 css/, js/, img/
+├── netlify/functions/
+│   └── send-contact.js         contact form → email (Resend)
+├── tools/                      build-time checks and a dev server
+├── netlify.toml                build command, publish dir, functions dir, redirects, headers
+├── .github/workflows/deploy.yml  CI: build + lint on PRs, deploy on push to main
+├── .env.example                every variable you need to set, with no real values
+└── dist/                       generated — gitignored, never edited by hand
 ```
 
 ---
 
-## 1. Editing contact details — config only
-
-**Every** email address, phone number, WhatsApp number, office address, social link, map URL
-and form endpoint lives in **`config/site.config.json`**. Nothing is hardcoded in HTML — not in
-the visible copy, and not in the structured data either.
-
-Edit the JSON, save, reload. That is the whole workflow.
-
-```jsonc
-{
-  "contact": {
-    "email": "hello@intellivraglobal.com",     // TODO: replace
-    "phone": "+1 (469) 555-0142",              // display format
-    "phoneRaw": "+14695550142",                // E.164, used for tel: links
-    "whatsappRaw": "14695550142"               // digits only, used for wa.me links
-  },
-  "offices": [ /* add or remove offices freely — the UI repeats over this array */ ],
-  "social":  { "linkedin": "…", "x": "…", "github": "…" },
-  "maps":    { "embedUrl": "…", "linkUrl": "…" },
-  "forms":   { "contactEndpoint": "https://formspree.io/f/TODO_REPLACE_ME" }
-}
-```
-
-Everything marked `TODO` in the file (and in the `_TODO` array at the top) needs a real value
-before launch. Keys starting with `_` are notes and are ignored by the site.
-
-### How the binding works
-
-`assets/js/config-loader.js` fetches the JSON and fills any element carrying a `data-config*`
-attribute:
-
-| Attribute | Effect |
-| --- | --- |
-| `data-config="contact.email"` | sets `textContent` |
-| `data-config-href="social.linkedin"` | sets `href` |
-| `data-config-src="maps.embedUrl"` | sets `src` (iframes get `loading="lazy"`) |
-| `data-config-mailto="contact.email"` | builds a `mailto:` link (add `data-config-subject`) |
-| `data-config-text` | also use the bound value as the link label |
-| `data-config-tel="contact.phoneRaw"` | builds a `tel:` link |
-| `data-config-whatsapp="true"` | builds a `wa.me` link with the configured message |
-| `data-config-attr="title:maps.title"` | sets arbitrary attributes (pipe-separated) |
-| `data-config-repeat="offices"` | repeats its `<template>` per array item, `{{street}}` tokens |
-| `data-config-fallback="…"` | text to show if the config cannot be loaded |
-
-**Adding a new contact field:** add it to the JSON, then reference it in HTML with the dotted
-path. No JavaScript changes needed.
-
-**If the config fails to load** (offline, 404, bad JSON) every bound element degrades to
-"Contact us via LinkedIn" and links point at the LinkedIn page. The site never shows a blank or
-broken contact block.
-
-### Structured data uses the same source
-
-The static JSON-LD in each page deliberately contains **no** contact values. `config-loader.js`
-injects an `Organization` node with `email`, `telephone`, `sameAs`, `address`, `location` and
-`contactPoint` built from the config, sharing the same `@id` so consumers merge the two.
-`node tools/strip-contacts.js` fails the build if any config value ever leaks into an HTML file.
-
-### Local `file://` preview
-
-Browsers block `fetch()` of local JSON, so opening `index.html` straight from disk shows the
-fallback text. Two ways around it:
+## Quick start
 
 ```bash
-node tools/serve.js               # recommended: http://localhost:8080, zero dependencies
-node tools/serve.js 3000          # ...or on another port
-# or
-node tools/sync-config.js         # writes config/site.config.local.js, a window.__INTELLIVRA_CONFIG__ shim
+npm ci          # install (js-yaml is the only dependency)
+npm run build   # config/site.yaml + src/ -> dist/
+npm run serve   # preview dist/ at http://localhost:8080
+npm run dev     # build, then serve
+npm run lint    # contacts + JSON-LD + SEO/a11y audit + function tests
+npm test        # serverless function tests only (no email is sent)
 ```
-
-`tools/serve.js` mirrors how Cloudflare Pages and Netlify behave: `/` resolves to `index.html`,
-unknown paths return `404.html` with a real 404 status, and responses are sent `no-store` so a
-refresh always shows your latest edit.
-
-If you use the shim, add `<script src="config/site.config.local.js"></script>` before
-`config-loader.js` in each page's `<head>`, and re-run the script after editing the config.
-Remove it before deploying with `node tools/sync-config.js --remove`.
 
 ---
 
-## 2. Deploying
+## 1. Editing company and contact details
 
-The site is a folder of static files. No build command, no output directory transformation.
+Everything lives in **`config/site.yaml`**: legal name, tagline, description, all email
+addresses, phones, WhatsApp, both office addresses, social links, business hours, the Google
+Maps embed, footer legal text, and `contact.form_recipient`.
 
-### Cloudflare Pages
+```yaml
+contact:
+  form_recipient: akram.akram.raza25@gmail.com   # where the contact form is delivered
+  email: hello@intellivraglobal.com
+  phone: "+1 (469) 555-0142"                     # display format
+  phone_raw: "+14695550142"                      # E.164, used for tel: links and schema
+  whatsapp_raw: "14695550142"                    # digits only, used for wa.me links
 
-1. Push this folder to GitHub/GitLab.
-2. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-3. Build settings:
-   - **Framework preset:** `None`
-   - **Build command:** *(leave empty)*
-   - **Build output directory:** `/`
-4. Deploy, then **Custom domains** → add `intellivraglobal.com` and `www.intellivraglobal.com`.
-5. Cloudflare serves `404.html` for unknown paths automatically.
+offices:                                          # add or remove freely; the UI repeats over this list
+  - label: US Headquarters
+    street: 1301 Central Expressway South, Suite 200
+    ...
+```
 
-Or without Git: `npx wrangler pages deploy . --project-name=intellivraglobal`
+Edit, then `npm run build`. The build injects the values into every page **and** regenerates:
 
-### Netlify
+| Output | Contains |
+| --- | --- |
+| `dist/*.html` | visible copy, `mailto:`/`tel:`/`wa.me` links, offices, footer |
+| JSON-LD in each page | `Organization` (with `contactPoint`, `address`, `sameAs`), `WebSite` + `SearchAction`, `WebPage`/`AboutPage`/`ContactPage`, `BreadcrumbList`, six `Service` nodes, `FAQPage`, `ItemList` |
+| `dist/sitemap.xml` | every indexable page with `lastmod`, `changefreq`, `priority` |
+| `dist/robots.txt` | search + AI crawler allowlist (from `crawlers:` in the YAML) |
+| `dist/llms.txt` | machine-readable company summary for answer engines |
+| `netlify/functions/_site-config.json` | the recipient and messages the function needs |
 
-1. Drag the folder onto <https://app.netlify.com/drop>, or connect the repo.
-2. Build settings: **build command** empty, **publish directory** `.`.
-3. Netlify uses `404.html` automatically. Add a `_redirects` file if you later need rules.
-4. **Domain management** → add the custom domain and enable HTTPS.
+Services, industries and FAQs also live in the YAML, so the visible accordions and the
+`FAQPage`/`Service` structured data are generated from the same entries and cannot drift apart.
+Adding a service adds its card, its detail section, its footer link, its search entry and its
+schema node — in one place.
 
-Or from the CLI: `npx netlify-cli deploy --prod --dir=.`
+`npm run lint:contacts` fails the build if any of those values is ever pasted into a template.
 
-### GitHub Pages
+### Template syntax
 
-1. Push to a repo, then **Settings → Pages**.
-2. **Source:** `Deploy from a branch`; **Branch:** `main`, folder `/ (root)`.
-3. Add a `CNAME` file containing `intellivraglobal.com`, and point DNS at GitHub's IPs.
-4. A `.nojekyll` file is already included so Jekyll does not strip anything unexpected.
+`src/pages/*.html` open with a `<!--meta ... -->` JSON block (title, description, nav label,
+sitemap priority, which FAQ set to render), then use:
 
-> **Note:** GitHub Pages serves `404.html` for missing pages but does not let you set custom
-> headers. Cloudflare Pages or Netlify are the better fit if you want a CSP or cache-control
-> headers later.
+| Syntax | Meaning |
+| --- | --- |
+| `{{ contact.email }}` | escaped value from the YAML |
+| `{{{ raw }}}` | unescaped (used for inline SVG) |
+| `{{> header }}` | include `src/partials/header.html` |
+| `{{#each services}} … {{/each}}` | loop; inside use `{{ this.name }}`, `{{ @index }}`, `{{ @padded }}`, `{{ @first }}` |
+| `{{#if this.label}} … {{else}} … {{/if}}` | conditional |
+
+An unknown token fails the build rather than rendering blank.
+
+---
+
+## 2. Contact form
+
+### How it works
+
+1. The visitor submits `contact.html`. `src/assets/js/contact.js` validates in the browser and
+   POSTs JSON with `fetch()` — the page never reloads.
+2. `netlify/functions/send-contact.js` validates again server-side, applies spam checks, and
+   sends the email through Resend.
+3. It goes to `contact.form_recipient` from `config/site.yaml`. The address is **not** in the
+   function source; the build writes it to `netlify/functions/_site-config.json`.
+4. `Reply-To` is set to the visitor, so replying from your inbox reaches them directly.
+
+Spam handling, in order: a honeypot field (named in the YAML) that returns a fake success;
+a minimum fill time of 3 seconds; and a per-IP rate limit of 3 messages per 10 minutes.
+The rate limit is per function container — for hard guarantees, add Netlify rate limiting.
+
+### Setting it up with Resend (primary path)
+
+1. Create an account at <https://resend.com>.
+2. **Domains → Add domain** → `intellivraglobal.com`, then add the DNS records Resend shows.
+   Until the domain is verified you can only send to your own address.
+3. **API Keys → Create API Key** (send access is enough). Copy it once.
+4. In Netlify: **Site configuration → Environment variables → Add**:
+
+   | Key | Value |
+   | --- | --- |
+   | `EMAIL_API_KEY` | the Resend key (`re_…`) |
+   | `EMAIL_FROM` | `Intellivra Global <noreply@intellivraglobal.com>` |
+   | `EMAIL_PROVIDER` | `resend` (optional; it is the default) |
+
+5. Redeploy. Send a test message from `/contact.html`.
+
+The key is never committed and never appears in the GitHub workflow — only in Netlify.
+
+### Swapping the email provider
+
+`send-contact.js` has a `PROVIDERS` map. Each entry supplies an endpoint, headers, a body
+builder and an error reader. A Postmark adapter is already there as a worked example: set
+`EMAIL_PROVIDER=postmark` and put the server token in `EMAIL_API_KEY`. Adding SendGrid or
+Mailgun is one more object, not a rewrite.
+
+### Zero-backend fallback: Web3Forms
+
+If Resend is not set up yet — or you want the form live before touching DNS — Web3Forms needs
+no server at all.
+
+1. Get a free access key at <https://web3forms.com> (enter the destination address; they email
+   you the key).
+2. In `config/site.yaml`:
+
+   ```yaml
+   forms:
+     provider: web3forms                  # was: netlify
+     web3forms_access_key: "your-key-here"
+   ```
+
+3. `npm run build` and deploy.
+
+The form then posts straight to `https://api.web3forms.com/submit` with the access key, and the
+serverless function is bypassed entirely. Trade-offs: the access key is visible in the page
+source (it only allows sending to the address you registered), delivery and templating are
+Web3Forms', and the per-IP rate limit and fill-time check no longer apply — only the honeypot,
+which Web3Forms also supports. Switch back by setting `provider: netlify`.
+
+---
+
+## 3. Theme
+
+The palette is defined once, as CSS custom properties in the `:root` block of
+`src/assets/css/critical.css`. There are no hex or `rgba()` literals anywhere else in the CSS.
+
+| Token | Value | Used for |
+| --- | --- | --- |
+| `--navy-900` | `#0f2a43` | header, footer, closing CTA band, stat numerals |
+| `--accent` | `#1f5f8b` | the single accent: links, primary buttons, active states |
+| `--gray-50` … `--gray-900` | neutral scale | surfaces, borders, three levels of text |
+| `--line-control` | `#7e8896` | form control borders (3:1 for WCAG 1.4.11) |
+
+Backgrounds are white and `--gray-50`; navy is reserved for the header, footer and the one
+closing band per page. Headings use Inter Tight, body copy uses Inter, both from a single
+Google Fonts request. Decorative scroll animations were removed — only short hover, focus and
+open/close transitions remain, and they are disabled under `prefers-reduced-motion`.
+
+Every text/background pair meets WCAG AA; the lowest is 5.24:1 (subtle text on `--gray-100`)
+and interactive borders sit at 3.59:1.
+
+Changing the palette means editing the tokens, running `npm run build`, and re-running
+`python tools/make-images.py` (needs Pillow) to re-render `og-image.png`, `apple-touch-icon.png`
+and `favicon-32.png` in the new colours. `favicon.svg` and `logo.svg` are hand-edited SVGs that
+also carry the navy.
+
+---
+
+## 4. Deploying
+
+### One-time setup
+
+**Netlify**
+
+1. **Add new site → Import an existing project** → pick the GitHub repo.
+2. Build settings come from `netlify.toml` (`npm run build`, publish `dist`, functions
+   `netlify/functions`). Leave the UI fields empty.
+3. Add the environment variables from section 2.
+4. **Domain management** → add `intellivraglobal.com` and `www.intellivraglobal.com`.
+5. Copy the **Site ID** from **Site configuration → General**.
+
+**GitHub**
+
+1. **Settings → Secrets and variables → Actions → New repository secret**:
+
+   | Secret | Where to get it |
+   | --- | --- |
+   | `NETLIFY_AUTH_TOKEN` | Netlify → User settings → Applications → Personal access tokens |
+   | `NETLIFY_SITE_ID` | Netlify → Site configuration → General → Site ID |
+
+2. Do **not** add `EMAIL_API_KEY` here. It belongs in Netlify only.
+
+### The pipeline
+
+`.github/workflows/deploy.yml`:
+
+- **Pull request into `main`** → `npm ci` → `npm run build` → `npm run lint` → upload the built
+  site as an artifact. **No deploy.**
+- **Push to `main`** (including a merged PR) → the same checks, then deploy to production with
+  the Netlify CLI.
+
+Every tunable is an `env:` value at the top of the workflow, so changing the Node version,
+build command, publish directory, functions directory or site name is a one-line edit:
+
+```yaml
+env:
+  NODE_VERSION: "20"
+  BUILD_COMMAND: "npm run build"
+  PUBLISH_DIR: "dist"
+  FUNCTIONS_DIR: "netlify/functions"
+  SITE_NAME: "intellivraglobal"
+  NETLIFY_CLI_VERSION: "17"
+```
+
+Netlify's own Git integration can stay on for deploy previews; the Actions workflow is what
+publishes production.
+
+### Manual deploy
+
+```bash
+npm run build
+npx netlify-cli deploy --prod --dir=dist --functions=netlify/functions
+```
 
 ### Post-deploy checklist
 
-- [ ] `https://intellivraglobal.com/robots.txt` and `/sitemap.xml` return 200
-- [ ] `https://intellivraglobal.com/llms.txt` returns 200 as `text/plain`
+- [ ] `/robots.txt`, `/sitemap.xml`, `/llms.txt` return 200
+- [ ] `/careers` and `/careers.html` 301 to `/contact.html` (redirects in `netlify.toml`)
+- [ ] Send a real message through `/contact.html` and confirm it arrives
+- [ ] Check the function log in Netlify if it does not
 - [ ] Submit the sitemap in Google Search Console and Bing Webmaster Tools
-- [ ] Validate structured data at <https://validator.schema.org> and Google's Rich Results Test
-- [ ] Check the OG card at <https://www.opengraph.xyz>
-- [ ] Run Lighthouse on the deployed URL (not `file://` — scores are meaningless locally)
+- [ ] Validate structured data at <https://validator.schema.org>
+- [ ] Run Lighthouse against the deployed URL
 
 ---
 
-## 3. Updating the sitemap
-
-`sitemap.xml` is generated. After adding, renaming or deleting a page:
-
-```bash
-node tools/build-seo.js          # rewrites sitemap.xml and llms.txt
-node tools/build-seo.js --check  # CI: exit 1 if either file is stale
-```
-
-`lastmod` comes from each file's modification time, pages marked `noindex` are excluded
-automatically, and priorities live in the `WEIGHTS` map at the top of the script. If you prefer
-to hand-edit, keep the format — the file is plain XML.
-
-The same script regenerates **`llms.txt`** from `site.config.json` plus each page's `<title>`
-and meta description, so a contact change flows through to the AI-crawler summary without
-being retyped.
-
----
-
-## 4. Updating jobs (`config/jobs.json`)
-
-Careers listings are data. Add an object to the `jobs` array and the page renders a card, a
-department filter and a `JobPosting` JSON-LD node for it — no HTML changes.
-
-```jsonc
-{
-  "id": "IG-2026-031",                       // shown as the requisition number
-  "title": "Senior Platform Engineer",
-  "department": "Cloud & DevOps",            // becomes a filter button
-  "employmentType": "FULL_TIME",             // FULL_TIME | PART_TIME | CONTRACTOR | TEMPORARY | INTERN
-  "engagement": "Contract-to-Hire",          // free text, shown as a tag
-  "workplace": "Remote",                     // Remote | Hybrid | On-site  (Remote adds TELECOMMUTE)
-  "location": { "locality": "Austin", "region": "TX", "country": "US" },
-  "datePosted": "2026-08-16",                // ISO date; required by Google Jobs
-  "validThrough": "2026-11-30",              // ISO date; expired posts should be removed
-  "salary": { "min": 80, "max": 100, "currency": "USD", "unit": "HOUR" },  // unit: HOUR | YEAR
-  "summary": "One sentence a candidate can scan.",
-  "responsibilities": ["…"],
-  "requirements": ["…"],
-  "applyEmailSubject": "Application - Senior Platform Engineer (IG-2026-031)"
-}
-```
-
-Rules of thumb:
-
-- **Remove expired roles.** Google penalises `JobPosting` markup for jobs that are no longer open.
-- Keep `validThrough` in the future, and update `"updated"` at the top of the file.
-- The apply button builds a `mailto:` from `contact.careersEmail` in `site.config.json`. To use an
-  ATS instead, add an `applyUrl` field and use it in `cardHtml()` in `assets/js/careers.js`.
-- Validate after editing: `node -e "JSON.parse(require('fs').readFileSync('config/jobs.json','utf8'))"`
-
----
-
-## 5. Editing layout and styling
-
-- **Design tokens** (colours, radii, spacing, type) live at the top of `assets/css/critical.css`.
-- `critical.css` is the canonical copy of the CSS inlined into every page's `<head>`. Edit it
-  there, then run `node tools/sync-partials.js` to push it into all eight pages.
-- Header, footer and the shared `<head>` assets live in `tools/partials/`. The same script keeps
-  them identical across pages and sets `aria-current="page"` on the right nav link.
-- Everything below the fold is in `assets/css/main.css`, loaded asynchronously.
-- Scroll reveals use CSS `animation-timeline: view()` with a `@supports` guard, so content is
-  always visible even where the feature is unsupported, and animations are disabled under
-  `prefers-reduced-motion`.
-
-The `tools/` scripts are conveniences, never requirements — the committed HTML is complete and
-standalone.
-
----
-
-## 6. Maintenance scripts
+## 5. Maintenance scripts
 
 | Command | What it does |
 | --- | --- |
-| `node tools/serve.js [port]` | Local dev server on http://localhost:8080 (no dependencies) |
-| `node tools/sync-partials.js` | Push `critical.css`, head assets, header and footer into every page |
-| `node tools/sync-partials.js --check` | CI guard: fail if a page is out of sync |
-| `node tools/build-seo.js` | Regenerate `sitemap.xml` and `llms.txt` |
-| `node tools/audit.js` | Full static self-review: titles, descriptions, canonicals, OG/Twitter, headings, alt text, labels, links, anchors, sitemap coverage |
-| `node tools/strip-contacts.js` | Fail if any contact value is hardcoded in HTML |
-| `node tools/validate-jsonld.js` | Parse and validate every JSON-LD block |
-| `node tools/sync-config.js` | Write the `file://` preview shim |
-| `python tools/make-images.py` | Re-render `og-image.png`, `apple-touch-icon.png`, `favicon-32.png` (needs Pillow) |
+| `npm run build` | Generate `dist/` from `config/site.yaml` and `src/` |
+| `npm run clean` | Delete `dist/` |
+| `npm run serve` | Preview `dist/` on http://localhost:8080 |
+| `npm run dev` | Build, then serve |
+| `npm run lint` | All four checks below |
+| `npm run lint:contacts` | Fail if any contact/company value is hardcoded in `src/` or the function |
+| `npm run lint:jsonld` | Parse and validate every JSON-LD block in `dist/` |
+| `npm run lint:audit` | Titles, descriptions, canonicals, OG/Twitter, headings, alt text, labels, dead links, sitemap coverage, spam handling |
+| `npm test` | Exercise the serverless function with a stubbed `fetch` — no email sent, no key needed |
+| `python tools/make-images.py` | Re-render the OG image and icons (needs Pillow) |
 
-A reasonable CI job:
+To test the function with the real Netlify runtime locally:
 
 ```bash
-node tools/sync-partials.js --check
-node tools/build-seo.js --check
-node tools/strip-contacts.js
-node tools/validate-jsonld.js
-node tools/audit.js
+npm run build
+npx netlify-cli dev          # serves dist/ and /.netlify/functions/*
 ```
 
 ---
 
-## 7. SEO notes
+## 6. Notes and remaining TODOs
 
-- One `<h1>` per page; headings nest without skipping levels.
-- Titles are under 60 characters, meta descriptions under 155, each written as a plain
-  declarative sentence that leads with the entity name.
-- Body copy is answer-first: each section opens with a factual sentence an LLM can quote, then
-  elaborates.
-- JSON-LD per page: `Organization`, `WebSite` + `SearchAction`, `WebPage`/`AboutPage`/`ContactPage`,
-  `BreadcrumbList` on inner pages, six `Service` nodes on Services, `FAQPage` on Home and Services,
-  `ItemList` on Industries, and `JobPosting` per opening on Careers.
-- `llms.txt` follows the llms.txt convention: H1 name, blockquote summary, then linked sections.
-- `robots.txt` explicitly allows GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot,
-  Claude-User, PerplexityBot, Google-Extended, Bingbot, CCBot and others.
-- Only `search.html` and `404.html` are `noindex`.
+- The Careers page was removed. `/careers` and `/careers.html` redirect to `/contact.html`;
+  the `careers@` mailbox is still published on the contact page.
+- `search.html` is `noindex` and excluded from the sitemap; it exists so the `SearchAction` in
+  the `WebSite` schema points somewhere real. Its index is generated from the YAML.
 
-### Remaining TODOs before launch
+Before launch:
 
-- Replace every `TODO` in `config/site.config.json` (contact details, addresses, form endpoint).
-- Replace the six client-logo placeholders in `assets/img/` and their alt text.
-- Replace the three placeholder testimonials on the home page with approved, attributable quotes.
-- Replace the four leadership placeholders on `about.html` with names, photos and LinkedIn URLs.
-- Confirm the metrics quoted on Home and About against the ATS and finance.
-- Publish `privacy.html` and `terms.html`, then link them from `legal` in the config.
+- [ ] Replace every `TODO` in `config/site.yaml` (addresses, phone numbers, real mailboxes)
+- [ ] Point `contact.form_recipient` at the real destination if it should not stay a personal Gmail
+- [ ] Replace the six client-logo placeholders in `src/assets/img/` and their alt text
+- [ ] Replace the three placeholder testimonials on the home page with approved quotes
+- [ ] Replace the four leadership placeholders on `about.html`
+- [ ] Confirm the metrics on the home and about pages against the ATS and finance
+- [ ] Publish privacy and terms pages, then link them from `legal:` in the YAML

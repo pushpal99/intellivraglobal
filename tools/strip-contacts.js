@@ -1,69 +1,96 @@
 #!/usr/bin/env node
 /**
- * strip-contacts.js - Intellivra Global (one-off + CI guard)
+ * strip-contacts.js - Intellivra Global
  *
- * Enforces the project's hard rule: no contact detail is ever hardcoded in an
- * HTML file. Visible contact details come from config/site.config.json through
- * config-loader.js, and the Organization contact JSON-LD is injected by the
- * same loader at runtime.
+ * Enforces the project's hard rule: no company or contact detail is hardcoded
+ * in a source template. Every value must come from config/site.yaml via the
+ * build. The built output in dist/ obviously contains the real values - that
+ * is the point of the build - so only src/ is checked.
  *
- * Run as a guard (exit 1 on any violation):
- *   node tools/strip-contacts.js
+ *   node tools/strip-contacts.js      (also runs as `npm run lint:contacts`)
  */
 
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const yaml = require('js-yaml');
 
 const ROOT = path.resolve(__dirname, '..');
-const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'config', 'site.config.json'), 'utf8'));
+const SRC = path.join(ROOT, 'src');
+const cfg = yaml.load(fs.readFileSync(path.join(ROOT, 'config', 'site.yaml'), 'utf8'));
 
-/** Every literal that must never appear in an .html file. */
+/** Every literal that must never appear in a source template. */
 function forbiddenValues() {
   const values = new Set();
   const add = (value) => {
-    if (typeof value === 'string' && value.trim()) values.add(value.trim());
+    if (typeof value === 'string' && value.trim().length > 3) values.add(value.trim());
   };
 
-  const c = cfg.contact || {};
-  [c.email, c.salesEmail, c.careersEmail, c.phone, c.phoneRaw, c.whatsapp, c.whatsappRaw].forEach(add);
-  Object.values(cfg.social || {}).forEach(add);
-  add((cfg.maps || {}).embedUrl);
-  add((cfg.maps || {}).linkUrl);
-  add((cfg.forms || {}).contactEndpoint);
+  const c = cfg.contact;
+  [c.form_recipient, c.email, c.sales_email, c.careers_email, c.phone, c.phone_raw, c.whatsapp, c.whatsapp_raw]
+    .forEach(add);
+  (cfg.social || []).forEach((s) => add(s.url));
+  add(cfg.maps.embed_url);
+  add(cfg.maps.link_url);
+  add(cfg.legal.copyright_holder);
+  add(cfg.legal.footer_text);
+  add(cfg.company.legal_name);
+  add(cfg.business_hours.summary);
   (cfg.offices || []).forEach((office) => {
-    [office.street, office.postalCode, office.phone, office.phoneRaw, office.email].forEach(add);
+    [office.street, office.postal_code, office.phone, office.phone_raw, office.email, office.hours].forEach(add);
   });
-
-  // Phone numbers also appear in schema.org dashed form (+1-469-555-0142).
-  [c.phoneRaw, ...(cfg.offices || []).map((o) => o.phoneRaw)].filter(Boolean).forEach((raw) => {
-    const digits = String(raw).replace(/\D/g, '');
-    if (digits.length === 11) add(`+${digits[0]}-${digits.slice(1, 4)}-${digits.slice(4, 7)}-${digits.slice(7)}`);
-  });
+  (cfg.forms.web3forms_access_key ? [cfg.forms.web3forms_access_key] : []).forEach(add);
 
   return [...values];
 }
 
+function walk(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return walk(full);
+    return /\.(html|js|css)$/.test(entry.name) ? [full] : [];
+  });
+}
+
 const values = forbiddenValues();
-const pages = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'));
+const files = walk(SRC);
 let violations = 0;
 
-for (const page of pages) {
-  const text = fs.readFileSync(path.join(ROOT, page), 'utf8');
+for (const file of files) {
+  const rel = path.relative(ROOT, file).replace(/\\/g, '/');
+  const text = fs.readFileSync(file, 'utf8');
   const hits = values.filter((value) => text.includes(value));
+
   if (hits.length) {
     violations += hits.length;
-    console.error(`FAIL ${page}`);
+    console.error(`FAIL ${rel}`);
     hits.forEach((hit) => console.error(`       hardcoded: ${hit}`));
   } else {
-    console.log(`ok   ${page}`);
+    console.log(`ok   ${rel}`);
+  }
+}
+
+// The serverless function must not hardcode the recipient either.
+const fnPath = path.join(ROOT, 'netlify', 'functions', 'send-contact.js');
+if (fs.existsSync(fnPath)) {
+  const fn = fs.readFileSync(fnPath, 'utf8');
+  if (fn.includes(cfg.contact.form_recipient)) {
+    violations += 1;
+    console.error('FAIL netlify/functions/send-contact.js');
+    console.error(`       hardcoded recipient: ${cfg.contact.form_recipient}`);
+  } else {
+    console.log('ok   netlify/functions/send-contact.js');
+  }
+  if (/EMAIL_API_KEY\s*=\s*['"]/.test(fn) || /\bre_[A-Za-z0-9]{10,}/.test(fn)) {
+    violations += 1;
+    console.error('FAIL netlify/functions/send-contact.js contains what looks like an API key');
   }
 }
 
 if (violations) {
-  console.error(`\n${violations} hardcoded contact value(s) found. Move them to config/site.config.json and bind with data-config attributes.`);
+  console.error(`\n${violations} hardcoded value(s) found. Move them to config/site.yaml and reference them with {{ tokens }}.`);
   process.exit(1);
 }
 
-console.log(`\nClean: ${pages.length} pages, ${values.length} config values checked.`);
+console.log(`\nClean: ${files.length} source files checked against ${values.length} config values.`);

@@ -2,10 +2,10 @@
 /**
  * audit.js - Intellivra Global
  *
- * Static self-review of the SEO, accessibility and performance requirements
- * that can be checked without a browser. Run before every deploy:
+ * Static self-review of the built site in dist/: SEO, accessibility and
+ * performance checks that do not need a browser. Run after every build:
  *
- *   node tools/audit.js
+ *   npm run build && node tools/audit.js
  *
  * Exit code is 1 if any ERROR is found. WARN entries are advisory.
  */
@@ -15,8 +15,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
-const BASE = 'https://intellivraglobal.com';
+const PROJECT = path.resolve(__dirname, '..');
+const ROOT = path.join(PROJECT, 'dist');
+const yaml = require('js-yaml');
+const cfg = yaml.load(fs.readFileSync(path.join(PROJECT, 'config', 'site.yaml'), 'utf8'));
+const BASE = String(cfg.site.url).replace(/\/+$/, '');
+
+if (!fs.existsSync(ROOT)) {
+  console.error('dist/ not found. Run `npm run build` first.');
+  process.exit(1);
+}
+
 const pages = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'));
 
 let errors = 0;
@@ -141,7 +150,7 @@ for (const page of pages) {
 
   /* ---------- performance ---------- */
   if (!has(/<style id="critical">/)) err(page, 'critical CSS is not inlined');
-  if (!has(/rel="preload" as="style" href="assets\/css\/main\.css"/)) err(page, 'main.css is not loaded asynchronously');
+  if (!has(/rel="preload" as="style" href="\/assets\/css\/main\.css"/)) err(page, 'main.css is not loaded asynchronously');
   [...raw.matchAll(/<script\b(?![^>]*type="application\/ld\+json")[^>]*src="[^"]*"[^>]*>/g)].forEach((m) => {
     if (!/\sdefer\b|\sasync\b/.test(m[0])) err(page, `render-blocking script: ${m[0].slice(0, 70)}`);
   });
@@ -184,16 +193,28 @@ console.log('\n== Site-level checks ==\n');
 
 const site = (msg) => { errors += 1; console.log(`  ERROR  ${msg}`); };
 
-for (const file of ['robots.txt', 'sitemap.xml', 'llms.txt', 'README.md', 'config/site.config.json', 'config/jobs.json']) {
-  if (!fs.existsSync(path.join(ROOT, file))) site(`missing ${file}`);
+for (const file of ['robots.txt', 'sitemap.xml', 'llms.txt']) {
+  if (!fs.existsSync(path.join(ROOT, file))) site(`missing dist/${file}`);
 }
+for (const file of ['README.md', 'config/site.yaml', 'netlify.toml', '.github/workflows/deploy.yml', '.env.example', '.gitignore', 'build.js', 'netlify/functions/send-contact.js']) {
+  if (!fs.existsSync(path.join(PROJECT, file))) site(`missing ${file}`);
+}
+
+// The Careers page and its data must be gone, with no links left behind.
+for (const gone of ['careers.html', 'config/jobs.json', 'src/pages/careers.html', 'src/assets/js/careers.js']) {
+  if (fs.existsSync(path.join(PROJECT, gone))) site(`${gone} should have been removed`);
+}
+pages.forEach((page) => {
+  const raw = fs.readFileSync(path.join(ROOT, page), 'utf8');
+  if (/careers\.html|JobPosting|jobs\.json/i.test(raw)) site(`${page} still references the removed Careers page`);
+});
 
 const robots = fs.readFileSync(path.join(ROOT, 'robots.txt'), 'utf8');
 ['GPTBot', 'OAI-SearchBot', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Bingbot', 'CCBot']
   .forEach((bot) => {
     if (!new RegExp(`User-agent: ${bot}\\s*\\nAllow: /`, 'i').test(robots)) site(`robots.txt does not explicitly allow ${bot}`);
   });
-if (!/Sitemap: https:\/\/intellivraglobal\.com\/sitemap\.xml/.test(robots)) site('robots.txt has no Sitemap line');
+if (!robots.includes(`Sitemap: ${BASE}/sitemap.xml`)) site('robots.txt has no Sitemap line');
 
 const sitemap = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
 pages.forEach((page) => {
@@ -212,13 +233,27 @@ const llms = fs.readFileSync(path.join(ROOT, 'llms.txt'), 'utf8');
 if (!/^# /.test(llms)) site('llms.txt does not start with an H1');
 if (!/\n> /.test(llms)) site('llms.txt has no blockquote summary');
 if (!llms.includes(`${BASE}/contact.html`)) site('llms.txt does not link the contact page');
+if (/careers\.html|\/careers/i.test(llms)) site('llms.txt still links the removed Careers page');
+if (!llms.includes(cfg.contact.email)) site('llms.txt is missing the contact email');
 
-const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'config', 'site.config.json'), 'utf8'));
-for (const key of ['company.legalName', 'contact.email', 'contact.phone', 'contact.whatsapp', 'social.linkedin', 'maps.embedUrl', 'businessHours.summary', 'legal.footerText', 'forms.contactEndpoint']) {
+for (const key of ['company.legal_name', 'company.tagline', 'contact.form_recipient', 'contact.email', 'contact.phone', 'contact.whatsapp', 'maps.embed_url', 'business_hours.summary', 'legal.footer_text', 'forms.endpoint']) {
   const value = key.split('.').reduce((acc, k) => (acc || {})[k], cfg);
-  if (!value) site(`site.config.json is missing ${key}`);
+  if (!value) site(`config/site.yaml is missing ${key}`);
 }
-if (!Array.isArray(cfg.offices) || cfg.offices.length < 2) site('site.config.json should define at least two offices (US + India)');
+if (!Array.isArray(cfg.offices) || cfg.offices.length < 2) site('config/site.yaml should define at least two offices (US + India)');
+if (!Array.isArray(cfg.social) || !cfg.social.length) site('config/site.yaml should define social links');
+
+// The contact form must reach the configured recipient through the function.
+const fn = fs.readFileSync(path.join(PROJECT, 'netlify', 'functions', 'send-contact.js'), 'utf8');
+if (!fn.includes('EMAIL_API_KEY')) site('the serverless function does not read EMAIL_API_KEY');
+if (!fn.includes("require('./_site-config.json')")) site('the serverless function does not read the generated site config');
+if (fn.includes(cfg.contact.form_recipient)) site('the serverless function hardcodes the recipient');
+if (!fn.includes('honeypot_field') || !fn.includes('rateLimited')) site('the serverless function is missing spam handling');
+
+const contactHtml = fs.readFileSync(path.join(ROOT, 'contact.html'), 'utf8');
+if (!contactHtml.includes(cfg.forms.endpoint)) site('contact.html does not point at the configured form endpoint');
+if (!contactHtml.includes(cfg.forms.honeypot_field)) site('contact.html has no honeypot field');
+if (/<form[^>]+action="(?!#)/.test(contactHtml) && !contactHtml.includes('data-endpoint')) site('contact.html should submit via fetch, not a form action');
 
 /* ---------- summary ---------- */
 

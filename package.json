@@ -1,0 +1,25 @@
+{
+  "name": "intellivraglobal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for Intellivra Global (intellivraglobal.com), built from config/site.yaml.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "clean": "node build.js --clean",
+    "serve": "node tools/serve.js",
+    "dev": "node build.js && node tools/serve.js",
+    "lint": "npm run lint:contacts && npm run lint:jsonld && npm run lint:audit && npm test",
+    "lint:contacts": "node tools/strip-contacts.js",
+    "lint:jsonld": "node tools/validate-jsonld.js",
+    "lint:audit": "node tools/audit.js",
+    "check": "npm run build && npm run lint",
+    "test": "node tools/test-contact-function.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

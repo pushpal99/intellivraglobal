@@ -1,0 +1,70 @@
+# ============================================================================
+#  Netlify configuration - Intellivra Global
+#  Used by both Netlify's own Git integration and the GitHub Actions deploy.
+# ============================================================================
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # EMAIL_API_KEY, EMAIL_FROM and EMAIL_PROVIDER are set in the Netlify UI
+  # (Site configuration > Environment variables). Never put secrets in this file.
+
+[functions]
+  node_bundler = "esbuild"
+  # The build writes netlify/functions/_site-config.json (recipient, messages).
+  # esbuild inlines the require() of that JSON, but list it explicitly so the
+  # bundle is correct even if the require is ever made dynamic.
+  included_files = ["netlify/functions/_site-config.json"]
+
+# --- Deploy previews and branch builds run the same build, no deploy step ---
+[context.production]
+  command = "npm run build"
+
+[context.deploy-preview]
+  command = "npm run build"
+
+[context.branch-deploy]
+  command = "npm run build"
+
+# --- Redirects ---------------------------------------------------------------
+# Keep old Careers URLs from 404ing after the page was removed.
+[[redirects]]
+  from = "/careers"
+  to = "/contact.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/careers.html"
+  to = "/contact.html"
+  status = 301
+  force = true
+
+# --- Headers -----------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=3600"
