@@ -18,17 +18,17 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.abspath(os.path.join(HERE, "..", "assets", "img"))
+OUT = os.path.abspath(os.path.join(HERE, "..", "src", "assets", "img"))
 
-BG = (7, 11, 20)
-LINE = (27, 36, 56)
-TEXT = (232, 237, 249)
-MUTED = (166, 177, 203)
-DIM = (124, 136, 164)
-ACCENT = (108, 140, 255)
-ACCENT_TEXT = (157, 178, 255)
-CYAN = (103, 232, 249)
-INK = (5, 7, 14)
+# Palette mirrors the CSS custom properties in src/assets/css/critical.css.
+NAVY = (15, 42, 67)        # --navy-900
+NAVY_LINE = (47, 74, 102)  # --line-on-navy
+WHITE = (255, 255, 255)
+TEXT_ON_NAVY = (255, 255, 255)
+MUTED_ON_NAVY = (198, 211, 224)  # --text-on-navy-muted
+ACCENT = (31, 95, 139)     # --accent
+ACCENT_LIGHT = (137, 178, 209)
+INK = (22, 32, 43)         # --gray-900
 
 HEADLINE_1 = "IT staffing and consulting"
 HEADLINE_2 = "for teams that ship."
@@ -55,102 +55,64 @@ def find_font(candidates, size):
     return ImageFont.load_default()
 
 
-def radial_glow(size, center, radius, colour, max_alpha):
-    """A soft radial wash, drawn as concentric circles on an alpha mask."""
-    w, h = size
-    layer = Image.new("RGBA", size, colour + (0,))
-    draw = ImageDraw.Draw(layer)
-    steps = 90
-    for i in range(steps, 0, -1):
-        r = radius * i / steps
-        alpha = int(max_alpha * (1 - i / steps) ** 2)
-        draw.ellipse(
-            [center[0] - r, center[1] - r, center[0] + r, center[1] + r],
-            fill=colour + (alpha,),
-        )
-    return layer
-
-
-def rounded_gradient(size, radius, start, end):
-    """A rounded rectangle filled with a diagonal two-stop gradient."""
-    w, h = size
-    grad = Image.new("RGB", size)
-    px = grad.load()
-    for y in range(h):
-        for x in range(w):
-            t = (x / max(w - 1, 1) + y / max(h - 1, 1)) / 2
-            px[x, y] = tuple(int(start[i] + (end[i] - start[i]) * t) for i in range(3))
-    mask = Image.new("L", size, 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, w - 1, h - 1], radius=radius, fill=255)
-    grad.putalpha(mask)
-    return grad
-
-
 def draw_mark(img, x, y, box, radius, bar_width):
-    """The Intellivra bar-graph monogram."""
-    mark = rounded_gradient((box, box), radius, ACCENT, (34, 211, 238))
-    img.alpha_composite(mark, (x, y))
+    """The Intellivra bar mark: a white tile with navy bars."""
+    tile = Image.new("RGBA", (box, box), (0, 0, 0, 0))
+    ImageDraw.Draw(tile).rounded_rectangle([0, 0, box - 1, box - 1], radius=radius, fill=WHITE + (255,))
+    img.alpha_composite(tile, (x, y))
+
     draw = ImageDraw.Draw(img)
-    u = box / 64.0
-    bars = [(20, 22, 42), (29, 30, 42), (38, 18, 42), (46, 27, 42)]
-    for cx, top, bottom in bars:
+    u = box / 32.0
+    for cx, top, bottom in ((10, 13, 22), (16, 17, 22), (22, 10, 22)):
         draw.line(
             [(x + cx * u, y + top * u), (x + cx * u, y + bottom * u)],
-            fill=INK + (225,),
+            fill=NAVY + (255,),
             width=max(2, int(bar_width * u)),
         )
 
 
 def build_og():
+    """Navy card with white type and a single accent rule - no gradients."""
     W, H = 1200, 630
-    img = Image.new("RGBA", (W, H), BG + (255,))
-
-    img.alpha_composite(radial_glow((W, H), (985, 30), 620, ACCENT, 108))
-    img.alpha_composite(radial_glow((W, H), (60, 600), 520, (34, 211, 238), 58))
-
+    img = Image.new("RGBA", (W, H), NAVY + (255,))
     draw = ImageDraw.Draw(img)
-    for y in (158, 315, 472):
-        draw.line([(0, y), (W, y)], fill=LINE + (170,), width=1)
-    for x in (300, 600, 900):
-        draw.line([(x, 0), (x, H)], fill=LINE + (170,), width=1)
 
-    # Concentric talent-network graphic on the right.
-    cx, cy = 950, 296
-    for r, colour in ((140, (27, 36, 56)), (98, (34, 49, 79)), (56, (42, 53, 80))):
-        draw.ellipse([cx - r, cy - r, cx + r, cy + r], outline=colour, width=2)
-    nodes = [(0, -140, 7, ACCENT_TEXT), (121, 70, 7, ACCENT_TEXT), (-121, 70, 7, ACCENT_TEXT),
-             (69, -69, 5, CYAN), (-88, -42, 5, CYAN), (28, 98, 5, CYAN)]
-    for dx, dy, r, colour in nodes:
-        draw.line([(cx, cy), (cx + dx, cy + dy)], fill=(51, 65, 92), width=1)
-    for dx, dy, r, colour in nodes:
-        draw.ellipse([cx + dx - r, cy + dy - r, cx + dx + r, cy + dy + r], fill=colour)
-    draw.ellipse([cx - 15, cy - 15, cx + 15, cy + 15], fill=ACCENT)
+    # Restrained structure: one hairline grid, no glows.
+    for x in (80, 1120):
+        draw.line([(x, 0), (x, H)], fill=NAVY_LINE + (110,), width=1)
+    draw.line([(0, 132), (W, 132)], fill=NAVY_LINE + (110,), width=1)
+    draw.line([(0, 520), (W, 520)], fill=NAVY_LINE + (110,), width=1)
 
-    # Lockup.
-    draw_mark(img, 80, 78, 64, 18, 5)
-    f_brand_b = find_font(BOLD_CANDIDATES, 32)
-    f_brand_r = find_font(REGULAR_CANDIDATES, 32)
-    draw.text((166, 90), "Intellivra ", font=f_brand_b, fill=TEXT)
-    draw.text((166 + draw.textlength("Intellivra ", font=f_brand_b), 90), "Global", font=f_brand_r, fill=ACCENT_TEXT)
+    # Lockup: white rounded mark with navy bars.
+    draw_mark(img, 80, 56, 52, 11, 4.5)
+    f_brand_b = find_font(BOLD_CANDIDATES, 27)
+    f_brand_r = find_font(REGULAR_CANDIDATES, 27)
+    draw.text((148, 65), "Intellivra ", font=f_brand_b, fill=TEXT_ON_NAVY)
+    draw.text((148 + draw.textlength("Intellivra ", font=f_brand_b), 65), "Global",
+              font=f_brand_r, fill=MUTED_ON_NAVY)
 
     # Headline.
     f_head = find_font(BOLD_CANDIDATES, 60)
-    draw.text((80, 242), HEADLINE_1, font=f_head, fill=TEXT)
-    draw.text((80, 318), HEADLINE_2, font=f_head, fill=ACCENT_TEXT)
+    draw.text((80, 214), HEADLINE_1, font=f_head, fill=TEXT_ON_NAVY)
+    draw.text((80, 288), HEADLINE_2, font=f_head, fill=TEXT_ON_NAVY)
 
-    f_sub = find_font(REGULAR_CANDIDATES, 27)
-    draw.text((80, 420), SUBLINE, font=f_sub, fill=MUTED)
+    # The one accent: a short rule under the headline.
+    draw.rectangle([80, 382, 176, 386], fill=ACCENT_LIGHT)
 
-    # Service pills.
-    f_pill = find_font(REGULAR_CANDIDATES, 20)
+    f_sub = find_font(REGULAR_CANDIDATES, 25)
+    draw.text((80, 414), SUBLINE, font=f_sub, fill=MUTED_ON_NAVY)
+
+    # Service pills as plain separated labels.
+    f_pill = find_font(REGULAR_CANDIDATES, 19)
     x = 80
-    for label in PILLS:
-        draw.ellipse([x, 506, x + 10, 516], fill=ACCENT)
-        draw.text((x + 22, 500), label, font=f_pill, fill=DIM)
-        x += int(draw.textlength(label, font=f_pill)) + 62
+    for i, label in enumerate(PILLS):
+        if i:
+            draw.text((x - 26, 556), "/", font=f_pill, fill=NAVY_LINE)
+        draw.text((x, 556), label, font=f_pill, fill=MUTED_ON_NAVY)
+        x += int(draw.textlength(label, font=f_pill)) + 52
 
-    f_domain = find_font(SEMI_CANDIDATES, 22)
-    draw.text((80, 562), DOMAIN, font=f_domain, fill=ACCENT_TEXT)
+    f_domain = find_font(SEMI_CANDIDATES, 21)
+    draw.text((80, 152), DOMAIN, font=f_domain, fill=ACCENT_LIGHT)
 
     path = os.path.join(OUT, "og-image.png")
     img.convert("RGB").save(path, "PNG", optimize=True)
@@ -158,10 +120,11 @@ def build_og():
 
 
 def build_icon(size, filename, pad_ratio, radius_ratio):
-    img = Image.new("RGBA", (size, size), BG + (255,))
+    """App icon: navy field, white mark - the inverse of the OG lockup."""
+    img = Image.new("RGBA", (size, size), NAVY + (255,))
     pad = int(size * pad_ratio)
     box = size - pad * 2
-    draw_mark(img, pad, pad, box, int(box * radius_ratio), 5)
+    draw_mark(img, pad, pad, box, int(box * radius_ratio), 4.5)
     path = os.path.join(OUT, filename)
     img.convert("RGB").save(path, "PNG", optimize=True)
     print("wrote", path, os.path.getsize(path), "bytes")

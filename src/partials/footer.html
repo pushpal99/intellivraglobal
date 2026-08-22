@@ -1,0 +1,65 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/" aria-label="{{ company.short_name }} - home">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <rect class="brand__mark-bg" width="32" height="32" rx="6" />
+            <path class="brand__mark-bars" d="M10 22V13M16 22v-5M22 22V10" stroke-width="2.5" stroke-linecap="round" fill="none" />
+          </svg>
+          <span><b>Intellivra</b> <i>Global</i></span>
+        </a>
+        <p>{{ company.description }}</p>
+        <ul class="social-row" aria-label="{{ company.short_name }} on social media">
+          {{#each social}}
+          <li>
+            <a href="{{ this.url }}" rel="noopener" aria-label="{{ company.short_name }} on {{ this.name }}">
+              {{{ this.icon }}}
+            </a>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <nav class="footer-col" aria-labelledby="footer-services">
+        <h2 id="footer-services">Services</h2>
+        <ul>
+          {{#each services}}
+          <li><a href="/services.html#{{ this.id }}">{{ this.short_name }}</a></li>
+          {{/each}}
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-labelledby="footer-company">
+        <h2 id="footer-company">Company</h2>
+        <ul>
+          <li><a href="/about.html">About {{ company.short_name }}</a></li>
+          <li><a href="/industries.html">Industries served</a></li>
+          <li><a href="/services.html">Engagement models</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/llms.txt">llms.txt</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2 id="footer-contact">Contact</h2>
+        <ul aria-labelledby="footer-contact">
+          <li><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></li>
+          <li><a href="tel:{{ contact.phone_raw }}">{{ contact.phone }}</a></li>
+          <li><a href="{{ whatsapp_url }}" rel="noopener">Message us on WhatsApp</a></li>
+          <li>{{ business_hours.summary }}</li>
+        </ul>
+        <ul class="offices-mini" aria-label="Office locations">
+          {{#each offices}}
+          <li><strong>{{ this.label }}</strong>{{ this.locality }}, {{ this.region }} &mdash; {{ this.country }}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ year }} {{ legal.copyright_holder }}. All rights reserved.</p>
+      <p>{{ legal.footer_text }}</p>
+    </div>
+  </div>
+</footer>

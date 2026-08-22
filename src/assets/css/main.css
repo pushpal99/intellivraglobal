@@ -1,0 +1,837 @@
+/* ==========================================================================
+   Intellivra Global - main stylesheet
+   Loaded asynchronously. All colours come from the custom properties defined
+   in critical.css (:root) - no raw hex values below this line.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Sections and layout primitives
+   -------------------------------------------------------------------------- */
+
+.section {
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+  position: relative;
+}
+
+.section--tight { padding-block: clamp(2.5rem, 5vw, 4rem); }
+
+.section--alt {
+  background: var(--bg-muted);
+  border-block: 1px solid var(--line);
+}
+
+/* Navy anchor band - used sparingly, for the closing call to action. */
+.section--navy {
+  background: var(--navy-900);
+  color: var(--text-on-navy);
+}
+
+.section--navy h2,
+.section--navy h3 { color: var(--text-on-navy); }
+.section--navy p { color: var(--text-on-navy-muted); }
+.section--navy :focus-visible { outline-color: var(--text-on-navy); }
+
+.section__head {
+  max-width: 60ch;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.section__head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section__head h2 {
+  font-size: clamp(1.5rem, 3vw, 2.05rem);
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  font-size: 1.0625rem;
+  color: var(--text-muted);
+  max-width: 58ch;
+}
+
+.section__head .lede { margin-top: 0.85rem; }
+.section__head--center .lede { margin-inline: auto; }
+
+.grid { display: grid; gap: clamp(1rem, 2vw, 1.5rem); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+
+.split {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 23rem), 1fr));
+}
+
+.split--center { align-items: center; }
+.stack > * + * { margin-top: 0.9rem; }
+.muted { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   2. Cards
+   -------------------------------------------------------------------------- */
+
+.card {
+  position: relative;
+  padding: clamp(1.35rem, 2.2vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color var(--t), box-shadow var(--t);
+  block-size: 100%;
+}
+
+.card--link:hover,
+.card--link:focus-within {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.card__icon {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  margin-bottom: 1.1rem;
+}
+
+.card__icon svg { inline-size: 1.25rem; block-size: 1.25rem; }
+
+.card h3 {
+  font-size: 1.0625rem;
+  margin-bottom: 0.5rem;
+}
+
+.card h3 a { color: var(--text); text-decoration: none; transition: color var(--t); }
+.card--link:hover h3 a,
+.card h3 a:focus-visible { color: var(--accent); }
+
+.card p { color: var(--text-muted); font-size: 0.9375rem; }
+
+.card__meta {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+}
+
+/* Whole-card click target that keeps the real link accessible. */
+.card__stretch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   3. Tags
+   -------------------------------------------------------------------------- */
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  background: var(--surface-muted);
+}
+
+.tag--accent {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-subtle);
+}
+
+a.tag { text-decoration: none; transition: border-color var(--t), color var(--t); }
+a.tag:hover,
+a.tag:focus-visible { color: var(--accent); border-color: var(--accent-border); }
+
+/* --------------------------------------------------------------------------
+   4. Lists
+   -------------------------------------------------------------------------- */
+
+.checklist { display: grid; gap: 0.65rem; }
+
+.checklist li {
+  position: relative;
+  padding-inline-start: 1.6rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+.checklist li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.5em;
+  inline-size: 0.55rem;
+  block-size: 0.3rem;
+  border-inline-start: 2px solid var(--accent);
+  border-block-end: 2px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+.checklist li strong { color: var(--text); font-weight: 600; }
+
+.numbered { counter-reset: step; display: grid; gap: 1.35rem; }
+
+.numbered li {
+  counter-increment: step;
+  position: relative;
+  padding-inline-start: 3rem;
+  color: var(--text-muted);
+}
+
+.numbered li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inline-size: 2rem;
+  block-size: 2rem;
+  display: grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  background: var(--accent-subtle);
+}
+
+.numbered li h3 { color: var(--text); font-size: 1rem; margin-bottom: 0.3rem; }
+
+/* --------------------------------------------------------------------------
+   5. Stats
+   -------------------------------------------------------------------------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  border-inline-start: 1px solid var(--line);
+}
+
+.stat:first-child { border-inline-start: 0; }
+
+.stat dd {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+  color: var(--navy-900);
+}
+
+.stat dt { font-size: 0.875rem; color: var(--text-muted); order: 2; }
+
+@media (max-width: 48rem) {
+  .stat { border-inline-start: 0; border-block-start: 1px solid var(--line); }
+  .stat:first-child { border-block-start: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Client logos
+   -------------------------------------------------------------------------- */
+
+.logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: clamp(1.5rem, 3.5vw, 2.75rem);
+  align-items: center;
+  justify-items: center;
+}
+
+.logos img {
+  inline-size: 100%;
+  max-inline-size: 9.5rem;
+  opacity: 0.75;
+  transition: opacity var(--t);
+}
+
+.logos img:hover { opacity: 1; }
+
+.note {
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+  margin-top: 1.5rem;
+}
+
+.note--center { text-align: center; }
+
+/* --------------------------------------------------------------------------
+   7. Testimonials
+   -------------------------------------------------------------------------- */
+
+.quote {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: clamp(1.4rem, 2.4vw, 1.9rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  border-top: 3px solid var(--accent);
+  block-size: 100%;
+}
+
+.quote blockquote { font-size: 0.9875rem; color: var(--text-muted); line-height: 1.7; }
+
+.quote figcaption { font-size: 0.8125rem; color: var(--text-subtle); margin-top: auto; }
+.quote figcaption strong { display: block; color: var(--text); font-weight: 600; font-size: 0.9375rem; }
+
+/* --------------------------------------------------------------------------
+   8. FAQ (details/summary - no JS)
+   -------------------------------------------------------------------------- */
+
+.faq { display: grid; gap: 0.5rem; max-width: 52rem; margin-inline: auto; }
+
+.faq details {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.faq details[open] { border-color: var(--line-strong); }
+
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1.05rem 3rem 1.05rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9875rem;
+  position: relative;
+  color: var(--text);
+}
+
+.faq summary::-webkit-details-marker { display: none; }
+
+.faq summary::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 1.25rem;
+  inset-block-start: 1.3rem;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-inline-end: 2px solid var(--accent);
+  border-block-end: 2px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform var(--t);
+}
+
+.faq details[open] summary::after { transform: rotate(-135deg); }
+.faq summary:hover { color: var(--accent); }
+
+.faq .faq__body { padding: 0 1.25rem 1.25rem; color: var(--text-muted); font-size: 0.9375rem; }
+.faq .faq__body p + p { margin-top: 0.7rem; }
+
+/* --------------------------------------------------------------------------
+   9. Service and industry detail sections
+   -------------------------------------------------------------------------- */
+
+.anchor-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 1.5rem; }
+
+.anchor-nav a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--t), border-color var(--t), background-color var(--t);
+}
+
+.anchor-nav a:hover,
+.anchor-nav a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-subtle);
+}
+
+.detail {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 6rem;
+}
+
+.detail:first-of-type { border-top: 0; }
+
+.detail__grid {
+  display: grid;
+  gap: clamp(1.75rem, 3.5vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  align-items: start;
+}
+
+.detail h2 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); margin-bottom: 0.8rem; }
+.detail__lead { color: var(--text); font-size: 1.0625rem; margin-bottom: 0.9rem; }
+.detail p { color: var(--text-muted); }
+.detail p + p { margin-top: 0.85rem; }
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  padding: clamp(1.25rem, 2.2vw, 1.6rem);
+}
+
+.panel h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   10. Forms
+   -------------------------------------------------------------------------- */
+
+.form { display: grid; gap: 1.1rem; }
+
+.form__row {
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+.field { display: grid; gap: 0.4rem; }
+
+.field label { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.field .hint { font-size: 0.8125rem; color: var(--text-subtle); }
+.field .req { color: var(--accent); }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--text);
+  background: var(--white);
+  border: 1px solid var(--line-control);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.85rem;
+  inline-size: 100%;
+  transition: border-color var(--t), box-shadow var(--t);
+  appearance: none;
+}
+
+textarea { min-block-size: 8.5rem; resize: vertical; }
+
+select {
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-subtle) 50%),
+                    linear-gradient(135deg, var(--text-subtle) 50%, transparent 50%);
+  background-position: calc(100% - 1.1rem) 1.2rem, calc(100% - 0.75rem) 1.2rem;
+  background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+  padding-inline-end: 2.5rem;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+input::placeholder,
+textarea::placeholder { color: var(--text-subtle); }
+
+input:user-invalid,
+textarea:user-invalid { border-color: var(--danger); }
+
+.field-error {
+  font-size: 0.8125rem;
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.field-error[hidden] { display: none; }
+
+.form__consent {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.form__consent input {
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: 1px solid var(--line-control);
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Honeypot: off-screen for people, in the DOM for bots. */
+.hp {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.form__status {
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  font-size: 0.9375rem;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+.form__status[data-state="success"] {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+  font-weight: 500;
+}
+
+.form__status[data-state="error"] {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.form__status[hidden] { display: none; }
+
+button[disabled] { opacity: 0.65; cursor: progress; }
+
+/* --------------------------------------------------------------------------
+   11. Contact details
+   -------------------------------------------------------------------------- */
+
+.contact-list { display: grid; gap: 1.2rem; }
+
+.contact-item dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 0.15rem;
+}
+
+.contact-item dd { font-size: 1rem; color: var(--text); }
+.contact-item a { color: var(--accent); }
+
+.offices {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.office {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  background: var(--surface);
+  border-top: 3px solid var(--navy-900);
+}
+
+.office h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy-900);
+  margin-bottom: 0.7rem;
+}
+
+.office address {
+  font-style: normal;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.9375rem;
+}
+
+.office .office__line { display: block; }
+.office .office__contact { margin-top: 0.7rem; display: grid; gap: 0.2rem; font-size: 0.875rem; }
+
+.map-frame {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-muted);
+  aspect-ratio: 21 / 9;
+}
+
+.map-frame iframe { inline-size: 100%; block-size: 100%; border: 0; display: block; }
+
+@media (max-width: 46rem) {
+  .map-frame { aspect-ratio: 4 / 3; }
+}
+
+/* --------------------------------------------------------------------------
+   12. Closing call to action (navy band)
+   -------------------------------------------------------------------------- */
+
+.cta { text-align: center; }
+
+.cta h2 {
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.85rem;
+}
+
+.cta p { max-width: 50ch; margin-inline: auto; }
+.cta .btn-row { justify-content: center; margin-top: 1.75rem; }
+
+/* --------------------------------------------------------------------------
+   13. Footer
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+  background: var(--navy-900);
+  color: var(--text-on-navy-muted);
+  padding-block: clamp(2.75rem, 5vw, 4rem) 1.75rem;
+}
+
+.site-footer :focus-visible { outline-color: var(--text-on-navy); }
+
+.footer-grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+.footer-brand { max-width: 24rem; }
+.footer-brand p { color: var(--text-on-navy-muted); font-size: 0.9375rem; margin-top: 0.9rem; }
+
+.footer-col h2 {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-on-navy);
+  margin-bottom: 0.9rem;
+  font-weight: 600;
+}
+
+.footer-col ul { display: grid; gap: 0.55rem; list-style: none; padding: 0; }
+
+.footer-col a,
+.footer-brand a:not(.brand) {
+  color: var(--text-on-navy-muted);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  transition: color var(--t);
+}
+
+.footer-col a:hover,
+.footer-col a:focus-visible,
+.footer-brand a:not(.brand):hover { color: var(--text-on-navy); text-decoration: underline; }
+
+.social-row { display: flex; gap: 0.5rem; margin-top: 1.35rem; }
+
+.social-row a {
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-on-navy);
+  color: var(--text-on-navy-muted);
+  transition: color var(--t), border-color var(--t), background-color var(--t);
+}
+
+.social-row a:hover,
+.social-row a:focus-visible {
+  color: var(--text-on-navy);
+  border-color: var(--text-on-navy-muted);
+  background: var(--navy-700);
+}
+
+.social-row svg { inline-size: 1rem; block-size: 1rem; }
+
+.offices-mini {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.35rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line-on-navy);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.offices-mini strong { color: var(--text-on-navy); font-weight: 600; display: block; }
+
+.footer-bottom {
+  margin-top: clamp(2.25rem, 4vw, 3rem);
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line-on-navy);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: var(--text-on-navy-muted);
+}
+
+/* --------------------------------------------------------------------------
+   14. Breadcrumbs and page hero
+   -------------------------------------------------------------------------- */
+
+.breadcrumb { padding-top: 1.5rem; }
+
+.breadcrumb ol {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+}
+
+.breadcrumb li + li::before { content: "/"; margin-inline-end: 0.4rem; color: var(--line-strong); }
+.breadcrumb a { color: var(--text-subtle); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent); text-decoration: underline; }
+.breadcrumb [aria-current="page"] { color: var(--text-muted); }
+
+.page-hero { padding-block: clamp(1.75rem, 4vw, 2.75rem) clamp(2.5rem, 5vw, 3.5rem); }
+
+.page-hero h1 {
+  font-size: clamp(1.9rem, 4.2vw, 2.85rem);
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  max-width: 20ch;
+  margin-bottom: 1rem;
+}
+
+.page-hero .lede { font-size: clamp(1.0625rem, 1.8vw, 1.1875rem); }
+
+/* --------------------------------------------------------------------------
+   15. Figures
+   -------------------------------------------------------------------------- */
+
+.figure-abstract {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  overflow: hidden;
+}
+
+.figure-abstract svg,
+.figure-abstract img { inline-size: 100%; block-size: auto; display: block; }
+.figure-abstract figcaption { margin-top: 0.9rem; font-size: 0.8125rem; color: var(--text-subtle); }
+
+/* --------------------------------------------------------------------------
+   16. Search results
+   -------------------------------------------------------------------------- */
+
+.results { display: grid; gap: 0.75rem; }
+
+.result {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color var(--t);
+}
+
+.result:hover { border-color: var(--line-strong); }
+.result h3 { font-size: 1rem; }
+.result h3 a { color: var(--text); text-decoration: none; }
+.result h3 a:hover { color: var(--accent); }
+.result p { color: var(--text-muted); font-size: 0.9375rem; }
+.result__section { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
+
+.status-note {
+  padding: 1.75rem;
+  text-align: center;
+  color: var(--text-subtle);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+}
+
+/* --------------------------------------------------------------------------
+   17. 404
+   -------------------------------------------------------------------------- */
+
+.notfound {
+  min-block-size: 58vh;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+.notfound .code {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 10vw, 5rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.notfound h1 { font-size: clamp(1.4rem, 3.4vw, 2rem); margin: 0.85rem 0 0.8rem; }
+.notfound p { color: var(--text-muted); max-width: 46ch; margin-inline: auto; }
+.notfound .btn-row { justify-content: center; margin-top: 1.85rem; }
+
+.notfound-links { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+
+/* --------------------------------------------------------------------------
+   18. Motion - restrained on purpose
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   19. Print
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .site-header,
+  .site-footer,
+  .section--navy,
+  .map-frame { display: none !important; }
+
+  body { background: var(--white); color: var(--gray-900); }
+  a::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-subtle); }
+}

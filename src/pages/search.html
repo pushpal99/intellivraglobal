@@ -1,0 +1,48 @@
+<!--meta
+{
+  "id": "search",
+  "output": "search.html",
+  "title": "Search | {{company.short_name}}",
+  "description": "Search the {{company.short_name}} site for services, industries, engagement models and contact information.",
+  "twitter_description": "Search services, industries and engagement models.",
+  "schema_type": "WebPage",
+  "breadcrumb": "Search",
+  "scripts": ["search.js"],
+  "noindex": true
+}
+-->
+<nav class="wrap breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span aria-current="page">Search</span></li>
+  </ol>
+</nav>
+
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Search</span>
+    <h1 id="page-title">Search this site</h1>
+    <p class="lede">Find a service, an industry, an engagement model or a contact detail.</p>
+
+    <form class="form" id="search-form" role="search" style="max-width:34rem;margin-top:1.75rem" action="/search.html" method="get">
+      <div class="field">
+        <label for="q">What are you looking for?</label>
+        <input type="text" id="q" name="q" autocomplete="off" placeholder="staff augmentation, HIPAA, contract-to-hire..." aria-describedby="search-hint">
+        <span class="hint" id="search-hint">Searches page titles and section summaries.</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn--primary" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script type="application/json" id="search-index">{{{ search_index_json }}}</script>
+
+<section class="section section--tight" aria-labelledby="results-title">
+  <div class="wrap">
+    <h2 id="results-title" style="font-size:1.15rem;margin-bottom:1.25rem">Results</h2>
+    <div class="results" id="search-results" aria-live="polite"></div>
+    <p class="status-note" id="search-status" role="status">Type a term above to search the site.</p>
+  </div>
+</section>

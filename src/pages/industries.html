@@ -1,0 +1,107 @@
+<!--meta
+{
+  "id": "industries",
+  "output": "industries.html",
+  "nav": "Industries",
+  "nav_order": 3,
+  "title": "Industries We Staff | {{company.short_name}}",
+  "description": "{{company.short_name}} staffs technology teams in healthcare, banking, retail, manufacturing, energy and SaaS, with compliance screening built into onboarding.",
+  "twitter_description": "Healthcare, BFSI, retail, manufacturing, energy and technology teams staffed with compliance-aware engineers.",
+  "schema_type": "WebPage",
+  "breadcrumb": "Industries",
+  "industries_schema": true,
+  "priority": "0.8",
+  "changefreq": "monthly"
+}
+-->
+<nav class="wrap breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span aria-current="page">Industries</span></li>
+  </ol>
+</nav>
+
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Industries</span>
+    <h1 id="page-title">Industries {{ company.short_name }} staffs</h1>
+    <p class="lede">
+      {{ company.short_name }} serves six industries: healthcare, banking and financial services,
+      retail and e-commerce, manufacturing, energy and utilities, and technology. Industry
+      experience matters here for one practical reason &mdash; each sector has a regulatory
+      baseline that decides who is allowed to touch the system, and we screen for it before
+      submission rather than during onboarding.
+    </p>
+    <nav class="anchor-nav" aria-label="Jump to an industry">
+      {{#each industries}}
+      <a href="#{{ this.id }}">{{ this.short_name }}</a>
+      {{/each}}
+    </nav>
+  </div>
+</section>
+
+<div class="wrap">
+  {{#each industries}}
+  <article class="detail" id="{{ this.id }}" aria-labelledby="{{ this.id }}-title">
+    <div class="detail__grid">
+      <div>
+        <span class="eyebrow">Industry {{ @padded }}</span>
+        <h2 id="{{ this.id }}-title">{{ this.name }}</h2>
+        <p class="detail__lead">{{ this.lead }}</p>
+        <p>{{ this.body }}</p>
+      </div>
+      <aside class="panel">
+        <h3>Roles we place most</h3>
+        <ul class="checklist">
+          {{#each this.roles}}
+          <li>{{ this }}</li>
+          {{/each}}
+        </ul>
+      </aside>
+    </div>
+  </article>
+  {{/each}}
+</div>
+
+<section class="section section--alt" aria-labelledby="compliance-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Compliance</span>
+      <h2 id="compliance-title">Screening is matched to the industry, not bolted on later</h2>
+      <p class="lede">
+        Every {{ company.short_name }} onboarding includes identity and right-to-work
+        verification, a seven-year criminal background check and employment verification.
+        Industry-specific checks are added before submission so nobody discovers a blocker on the
+        start date.
+      </p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card">
+        <h3>Healthcare</h3>
+        <p>HIPAA training, OIG exclusion screening, and immunisation or badge requirements where a site visit is involved.</p>
+      </article>
+      <article class="card">
+        <h3>Financial services</h3>
+        <p>Credit checks, FINRA registration verification, enhanced background screening and fingerprinting on request.</p>
+      </article>
+      <article class="card">
+        <h3>Energy &amp; public sector</h3>
+        <p>NERC CIP-004 personnel risk assessment, drug screening, and citizenship or clearance verification where required.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--navy on-navy" aria-labelledby="industries-cta-title">
+  <div class="wrap cta">
+    <h2 id="industries-cta-title">Hiring in one of these industries?</h2>
+    <p>
+      Tell us the role and the compliance environment. We will confirm whether we have vetted
+      people on the bench today and what a realistic start date looks like.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/contact.html">Start a requirement</a>
+      <a class="btn btn--secondary" href="/services.html">Compare engagement models</a>
+    </div>
+  </div>
+</section>

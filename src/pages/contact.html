@@ -1,0 +1,236 @@
+<!--meta
+{
+  "id": "contact",
+  "output": "contact.html",
+  "nav": "Contact",
+  "nav_order": 5,
+  "title": "Contact {{company.short_name}} | Hire IT Talent",
+  "description": "Contact {{company.short_name}} to staff an IT role or scope a delivery team. Offices in the US and India, with replies within one business day.",
+  "twitter_description": "Tell us the role. We reply within one business day and shortlist within 48 hours.",
+  "schema_type": "ContactPage",
+  "breadcrumb": "Contact",
+  "scripts": ["contact.js"],
+  "priority": "0.7",
+  "changefreq": "monthly"
+}
+-->
+<nav class="wrap breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span aria-current="page">Contact</span></li>
+  </ol>
+</nav>
+
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Contact</span>
+    <h1 id="page-title">Tell us the role. We reply within one business day.</h1>
+    <p class="lede">
+      {{ company.short_name }} responds to every enquiry within one business day and returns a
+      shortlist within 48 hours of an approved job description. Use the form for hiring
+      requirements, or reach the team directly by email, phone or WhatsApp.
+    </p>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="form-title">
+  <div class="wrap split">
+
+    <div>
+      <h2 id="form-title" style="font-size:1.35rem;margin-bottom:0.5rem">Send us a message</h2>
+      <p class="muted" style="margin-bottom:1.6rem">
+        Share the role, the engagement model and the timeline. A consultant &mdash; not an
+        auto-responder &mdash; will reply.
+      </p>
+
+      <form class="form" id="contact-form" novalidate
+            data-endpoint="{{ form_action }}"
+            data-provider="{{ forms.provider }}"
+            data-honeypot="{{ forms.honeypot_field }}"
+            data-access-key="{{ forms.web3forms_access_key }}"
+            data-success="{{ forms.success_message }}"
+            data-error="{{ forms.error_message }}">
+
+        <div class="form__row">
+          <div class="field">
+            <label for="name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="name" name="name" autocomplete="name" required aria-required="true" aria-describedby="name-error" maxlength="120">
+            <p class="field-error" id="name-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" autocomplete="organization" maxlength="120">
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="email">Work email <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required aria-required="true" aria-describedby="email-hint email-error" maxlength="180">
+            <span class="hint" id="email-hint">We reply from a real person, not a no-reply address.</span>
+            <p class="field-error" id="email-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" aria-describedby="phone-hint" maxlength="40">
+            <span class="hint" id="phone-hint">Optional. Please include the country code.</span>
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="engagement">What do you need?</label>
+            <select id="engagement" name="engagement">
+              <option value="">Not sure yet</option>
+              {{#each services}}
+              <option>{{ this.short_name }}</option>
+              {{/each}}
+              <option>I am looking for a job</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="timeline">When do you need it?</label>
+            <select id="timeline" name="timeline">
+              <option value="">Flexible</option>
+              <option>As soon as possible</option>
+              <option>Within 2 weeks</option>
+              <option>Within 30 days</option>
+              <option>Next quarter</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Tell us a little more <span class="req" aria-hidden="true">*</span></label>
+          <textarea id="message" name="message" required aria-required="true" aria-describedby="message-hint message-error" minlength="20" maxlength="4000" placeholder="Two senior data engineers for a Databricks migration, starting in about three weeks, hybrid in Dallas."></textarea>
+          <span class="hint" id="message-hint">A sentence or two is plenty. You can send the full job description after we reply.</span>
+          <p class="field-error" id="message-error" hidden></p>
+        </div>
+
+        <div class="form__consent">
+          <input type="checkbox" id="consent" name="consent" required aria-required="true" aria-describedby="consent-error">
+          <label for="consent">
+            I agree that {{ company.short_name }} may contact me about this enquiry.
+            {{ legal.privacy_note }}
+          </label>
+        </div>
+        <p class="field-error" id="consent-error" hidden></p>
+
+        <!-- Spam trap: hidden from people, tempting to bots. Field name comes from site.yaml. -->
+        <div class="hp" aria-hidden="true">
+          <label for="{{ forms.honeypot_field }}">Leave this field empty</label>
+          <input type="text" id="{{ forms.honeypot_field }}" name="{{ forms.honeypot_field }}" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" name="form_started_at" id="form_started_at" value="">
+
+        <div class="btn-row">
+          <button class="btn btn--primary" type="submit">Send message</button>
+        </div>
+
+        <p class="form__status" id="form-status" role="status" aria-live="polite" hidden></p>
+
+        <noscript>
+          <p class="form__status">
+            This form needs JavaScript to send your message. Please email us at
+            <a href="mailto:{{ contact.email }}">{{ contact.email }}</a> instead.
+          </p>
+        </noscript>
+      </form>
+    </div>
+
+    <div>
+      <h2 style="font-size:1.35rem;margin-bottom:1.35rem">Reach us directly</h2>
+
+      <dl class="contact-list">
+        <div class="contact-item">
+          <dt>General enquiries</dt>
+          <dd><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></dd>
+        </div>
+        <div class="contact-item">
+          <dt>New requirements</dt>
+          <dd><a href="mailto:{{ contact.sales_email }}?subject={{ subject_new_requirement }}">{{ contact.sales_email }}</a></dd>
+        </div>
+        <div class="contact-item">
+          <dt>Candidates</dt>
+          <dd><a href="mailto:{{ contact.careers_email }}">{{ contact.careers_email }}</a></dd>
+        </div>
+        <div class="contact-item">
+          <dt>Phone</dt>
+          <dd><a href="tel:{{ contact.phone_raw }}">{{ contact.phone }}</a></dd>
+        </div>
+        <div class="contact-item">
+          <dt>WhatsApp</dt>
+          <dd><a href="{{ whatsapp_url }}" rel="noopener">{{ contact.whatsapp }}</a></dd>
+        </div>
+        <div class="contact-item">
+          <dt>Business hours</dt>
+          <dd>
+            {{ business_hours.summary }}<br>
+            <span class="hint">{{ business_hours.note }}</span>
+          </dd>
+        </div>
+      </dl>
+
+      <h2 style="font-size:1.35rem;margin:2.25rem 0 1.15rem">Offices</h2>
+      <div class="offices">
+        {{#each offices}}
+        <article class="office">
+          <h3>{{ this.label }}</h3>
+          <address>
+            <span class="office__line">{{ this.street }}</span>
+            <span class="office__line">{{ this.locality }}, {{ this.region }} {{ this.postal_code }}</span>
+            <span class="office__line">{{ this.country }}</span>
+          </address>
+          <div class="office__contact">
+            <a href="tel:{{ this.phone_raw }}">{{ this.phone }}</a>
+            <a href="mailto:{{ this.email }}">{{ this.email }}</a>
+            <span class="hint">{{ this.hours }}</span>
+          </div>
+        </article>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="map-title">
+  <div class="wrap">
+    <h2 id="map-title" style="font-size:1.35rem;margin-bottom:1.15rem">Find our head office</h2>
+    <div class="map-frame">
+      <iframe
+        src="{{ maps.embed_url }}"
+        title="{{ maps.title }}"
+        width="600"
+        height="338"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+    </div>
+    <p class="note">
+      <a href="{{ maps.link_url }}" rel="noopener">Open the head office location in Google Maps</a>
+    </p>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="expect-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">What happens next</span>
+      <h2 id="expect-title">After you press send</h2>
+    </div>
+    <ol class="numbered">
+      <li>
+        <h3>A consultant reads it, same business day</h3>
+        Enquiries are routed to a recruiter or delivery lead by role type, not to a shared inbox nobody owns.
+      </li>
+      <li>
+        <h3>A 30-minute intake call</h3>
+        We agree must-have skills, interview loop, rate range and start date before any sourcing begins.
+      </li>
+      <li>
+        <h3>Shortlist within 48 hours</h3>
+        Three to five vetted profiles with interview notes, rates, location and work authorisation.
+      </li>
+    </ol>
+  </div>
+</section>

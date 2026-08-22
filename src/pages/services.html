@@ -1,0 +1,141 @@
+<!--meta
+{
+  "id": "services",
+  "output": "services.html",
+  "nav": "Services",
+  "nav_order": 2,
+  "title": "IT Staffing &amp; Consulting Services | {{company.short_name}}",
+  "description": "{{company.short_name}} offers six services: staff augmentation, contract-to-hire, direct placement, AI and data engineering, cloud, DevOps and managed teams.",
+  "twitter_description": "Six service lines, from staff augmentation to outcome-based managed delivery teams.",
+  "schema_type": "WebPage",
+  "breadcrumb": "Services",
+  "services_schema": true,
+  "faq": "services",
+  "priority": "0.9",
+  "changefreq": "monthly"
+}
+-->
+<nav class="wrap breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span aria-current="page">Services</span></li>
+  </ol>
+</nav>
+
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Services</span>
+    <h1 id="page-title">IT staffing and consulting services</h1>
+    <p class="lede">
+      {{ company.short_name }} provides six IT services to US enterprises: staff augmentation,
+      contract and contract-to-hire staffing, direct placement, AI and data engineering, cloud
+      and DevOps, and outcome-based managed teams. Every engagement draws from the same vetted
+      talent pool and the same 48-hour shortlist commitment.
+    </p>
+    <nav class="anchor-nav" aria-label="Jump to a service">
+      {{#each services}}
+      <a href="#{{ this.id }}">{{ this.short_name }}</a>
+      {{/each}}
+    </nav>
+  </div>
+</section>
+
+<div class="wrap">
+  {{#each services}}
+  <article class="detail" id="{{ this.id }}" aria-labelledby="{{ this.id }}-title">
+    <div class="detail__grid">
+      <div>
+        <span class="eyebrow">Service {{ @padded }}</span>
+        <h2 id="{{ this.id }}-title">{{ this.name }}</h2>
+        <p class="detail__lead">{{ this.lead }}</p>
+        {{#each this.body}}
+        <p>{{ this }}</p>
+        {{/each}}
+        <div class="btn-row" style="margin-top:1.5rem">
+          <a class="btn btn--primary btn--sm" href="/contact.html">{{ this.cta }}</a>
+        </div>
+      </div>
+      <aside class="panel">
+        <h3>{{ this.panel_title }}</h3>
+        <ul class="checklist">
+          {{#each this.panel}}
+          <li>{{#if this.label}}<strong>{{ this.label }}</strong> {{/if}}{{ this.text }}</li>
+          {{/each}}
+        </ul>
+      </aside>
+    </div>
+  </article>
+  {{/each}}
+</div>
+
+<section class="section section--alt" aria-labelledby="compare-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Choosing a model</span>
+      <h2 id="compare-title">Which engagement model fits the work?</h2>
+      <p class="lede">
+        The right model depends on three things: who manages the work day to day, where the budget
+        sits, and how well the scope is defined.
+      </p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="card">
+        <h3>Choose staff augmentation when</h3>
+        <ul class="checklist" style="margin-top:0.9rem">
+          <li>Your team manages the work and owns the backlog</li>
+          <li>Scope shifts sprint to sprint</li>
+          <li>You need capacity, not a delivery plan</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Choose contract-to-hire when</h3>
+        <ul class="checklist" style="margin-top:0.9rem">
+          <li>Headcount is not approved yet, but the work is real</li>
+          <li>You want to validate fit before converting</li>
+          <li>You need someone starting in under two weeks</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Choose a managed team when</h3>
+        <ul class="checklist" style="margin-top:0.9rem">
+          <li>The outcome can be written down and accepted</li>
+          <li>You do not have management bandwidth to spare</li>
+          <li>You want milestone pricing rather than hours</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="section__head section__head--center">
+      <span class="eyebrow">Service FAQ</span>
+      <h2 id="faq-title">Contracts, compliance and delivery questions</h2>
+    </div>
+
+    <div class="faq">
+      {{#each faqs.services}}
+      <details{{#if @first}} open{{/if}}>
+        <summary>{{ this.q }}</summary>
+        <div class="faq__body"><p>{{ this.a }}</p></div>
+      </details>
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+<section class="section section--navy on-navy" aria-labelledby="services-cta-title">
+  <div class="wrap cta">
+    <h2 id="services-cta-title">Not sure which model fits? Ask us.</h2>
+    <p>
+      Send the role or the problem statement. We will recommend an engagement model, a realistic
+      timeline and a rate range &mdash; even when the answer is that you do not need us.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/contact.html">Talk to a consultant</a>
+      <a class="btn btn--secondary" href="/industries.html">See industries served</a>
+    </div>
+  </div>
+</section>

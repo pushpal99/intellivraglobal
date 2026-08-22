@@ -2,12 +2,14 @@
 /**
  * serve.js - Intellivra Global
  *
- * Zero-dependency static server for local development. The site itself needs
- * no server, but serving it over http lets config-loader.js fetch
- * config/site.config.json (browsers block that on file:// origins).
+ * Zero-dependency static server that previews the built site in dist/.
+ * Run `npm run build` first, or use `npm run dev` to do both.
  *
  *   node tools/serve.js          # http://localhost:8080
  *   node tools/serve.js 3000     # pick a port
+ *
+ * Note: the contact form posts to a Netlify function, which this server does
+ * not run. Use `npx netlify-cli dev` to exercise the function locally.
  *
  * Behaviour matches Cloudflare Pages / Netlify closely enough for testing:
  * directory requests resolve to index.html, unknown paths return 404.html with
@@ -21,7 +23,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.join(path.resolve(__dirname, '..'), 'dist');
 const PORT = Number(process.argv[2]) || 8080;
 
 const TYPES = {
@@ -85,6 +87,11 @@ server.on('error', (err) => {
   }
   throw err;
 });
+
+if (!fs.existsSync(ROOT)) {
+  console.error('dist/ not found. Run `npm run build` first.');
+  process.exit(1);
+}
 
 server.listen(PORT, () => {
   console.log(`\n  Intellivra Global - dev server`);

@@ -1,0 +1,180 @@
+<!--meta
+{
+  "id": "about",
+  "output": "about.html",
+  "nav": "About",
+  "nav_order": 4,
+  "title": "About {{company.short_name}} | Our Mission and Team",
+  "description": "{{company.short_name}} is a US IT staffing and consulting firm founded in {{company.founded}} to make technical hiring faster, more honest and easier to verify.",
+  "twitter_description": "Founded in {{company.founded}} to make technical hiring faster, more honest and easier to verify.",
+  "schema_type": "AboutPage",
+  "breadcrumb": "About",
+  "priority": "0.6",
+  "changefreq": "monthly"
+}
+-->
+<nav class="wrap breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span aria-current="page">About</span></li>
+  </ol>
+</nav>
+
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="wrap">
+    <span class="eyebrow">About us</span>
+    <h1 id="page-title">We exist because technical hiring is slower than it needs to be</h1>
+    <p class="lede">
+      {{ company.short_name }} is an IT staffing and consulting firm founded in
+      {{ company.founded }}, with a US headquarters in {{ offices.0.region_name }}. We place pre-vetted engineers
+      with enterprises and run managed delivery teams for work that is better bought as an outcome
+      than as hours.
+    </p>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="mission-title">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow">Mission</span>
+      <h2 id="mission-title">Our mission is to make technical hiring fast, honest and verifiable</h2>
+      <div class="stack" style="margin-top:1rem">
+        <p class="muted">
+          The average enterprise engineering role in the United States takes over a month to fill,
+          and a large share of that time is spent reading resumes that were never a real match. We
+          think that is a solvable problem, and that solving it does not require pretending an
+          algorithm can judge an engineer.
+        </p>
+        <p class="muted">
+          So we do three things differently. We keep a continuously vetted bench instead of
+          starting from scratch on every requisition. We put a practising engineer in every
+          technical interview and write down what they found. And we publish our rates and our
+          margin when asked, because a staffing relationship that depends on the client not
+          knowing the numbers is not a relationship worth having.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Honest by default</h3>
+        <p>Rate, margin and market data disclosed on request. If we cannot fill a role well, we say so in the intake call rather than three weeks later.</p>
+      </article>
+      <article class="card">
+        <h3>Engineers judge engineers</h3>
+        <p>Every technical screen is run by someone who does the work. AI narrows the field; it never decides who is good.</p>
+      </article>
+      <article class="card">
+        <h3>Accountable to outcomes</h3>
+        <p>Where scope can be written down, we would rather be paid for the result than for the hours it took.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="name-title">
+  <div class="wrap split split--center">
+    <figure class="figure-abstract">
+      <svg viewBox="0 0 420 220" role="img" aria-labelledby="name-art-title" focusable="false">
+        <title id="name-art-title">The name Intellivra combines the Latin root intellectus with the Sanskrit word vara, meaning excellence</title>
+        <g font-family="Inter, sans-serif">
+          <text x="40" y="46" font-size="17" fill="#3c4653">intellectus</text>
+          <text x="40" y="66" font-size="12" fill="#5a6572">Latin: understanding</text>
+          <text x="270" y="46" font-size="17" fill="#3c4653">vara</text>
+          <text x="270" y="66" font-size="12" fill="#5a6572">Sanskrit: excellence</text>
+          <path d="M78 84 L150 116 M292 84 L226 116" stroke="#c8d0da" stroke-width="1.5" fill="none" />
+          <line x1="40" y1="140" x2="380" y2="140" stroke="#e1e6ec" stroke-width="1" />
+          <text x="40" y="180" font-size="36" font-weight="600" letter-spacing="-1" fill="#0f2a43">Intellivra</text>
+          <text x="228" y="180" font-size="14" fill="#1f5f8b">intelligence, applied well</text>
+        </g>
+      </svg>
+      <figcaption>The name is a compound, not an acronym.</figcaption>
+    </figure>
+
+    <div>
+      <span class="eyebrow">The name</span>
+      <h2 id="name-title">Why &ldquo;Intellivra&rdquo;</h2>
+      <div class="stack" style="margin-top:1rem">
+        <p class="muted">
+          &ldquo;Intellivra&rdquo; joins <em>intellectus</em>, the Latin root behind intellect and
+          understanding, with <em>vara</em>, a Sanskrit word meaning choice or excellence &mdash;
+          the two halves of the business. The Latin half is the judgement we apply to a
+          requisition; the Sanskrit half is the standard we hold candidates to, and a nod to the
+          delivery team.
+        </p>
+        <p class="muted">
+          &ldquo;Global&rdquo; is literal rather than aspirational: the company runs on two
+          continents, and every client engagement is staffed from whichever side of that footprint
+          fits the work, the budget and the time zone.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="leadership-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Leadership</span>
+      <h2 id="leadership-title">The people accountable for delivery</h2>
+      <p class="lede">
+        {{ company.short_name }} is run by a small leadership team split between the US
+        headquarters and the India delivery centre.
+      </p>
+    </div>
+
+    <!-- TODO: replace the four placeholder profiles with real names, titles, photos
+         (add width/height + alt text) and LinkedIn URLs. Once names are final, add a
+         Person entry per leader to the Organization JSON-LD in build.js. -->
+    <div class="grid grid--4">
+      <article class="card">
+        <h3>Chief Executive Officer</h3>
+        <p>Sets commercial strategy and owns the largest client relationships. Based in {{ offices.0.locality }}, {{ offices.0.region }}.</p>
+        <p class="card__meta">TODO: name and photo</p>
+      </article>
+      <article class="card">
+        <h3>VP of Delivery</h3>
+        <p>Owns managed team outcomes, delivery leads and the quality bar on every statement of work.</p>
+        <p class="card__meta">TODO: name and photo</p>
+      </article>
+      <article class="card">
+        <h3>Head of Talent</h3>
+        <p>Runs sourcing, the vetting pipeline and recruiter enablement across both offices.</p>
+        <p class="card__meta">TODO: name and photo</p>
+      </article>
+      <article class="card">
+        <h3>Principal Engineer</h3>
+        <p>Designs the technical screens, calibrates interviewers and advises on AI and data engagements.</p>
+        <p class="card__meta">TODO: name and photo</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="numbers-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">By the numbers</span>
+      <h2 id="numbers-title">Where {{ company.short_name }} stands today</h2>
+    </div>
+    <dl class="stats">
+      <div class="stat"><dd>{{ company.founded }}</dd><dt>Founded, with the India delivery centre opened in 2023</dt></div>
+      <div class="stat"><dd>{{ office_count }}</dd><dt>Offices: {{ offices.0.locality }}, {{ offices.0.region }}</dt></div>
+      <div class="stat"><dd>4,000+</dd><dt>Engineers in the continuously vetted talent pool</dt></div>
+      <div class="stat"><dd>{{ industry_count }}</dd><dt>Industries served, from healthcare to energy</dt></div>
+    </dl>
+    <!-- TODO: confirm every figure on this page with finance and the ATS before launch. -->
+    <p class="note">Figures current as of {{ metrics.as_of }}.</p>
+  </div>
+</section>
+
+<section class="section section--navy on-navy" aria-labelledby="about-cta-title">
+  <div class="wrap cta">
+    <h2 id="about-cta-title">Let's talk about the roles you need to fill</h2>
+    <p>Send one job description and we will come back with vetted profiles and a realistic time to fill.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/contact.html">Talk to our team</a>
+      <a class="btn btn--secondary" href="/services.html">See our services</a>
+    </div>
+  </div>
+</section>

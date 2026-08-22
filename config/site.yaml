@@ -1,0 +1,605 @@
+# ============================================================================
+#  Intellivra Global - site configuration
+#  ---------------------------------------------------------------------------
+#  SINGLE SOURCE OF TRUTH for every company and contact detail on the site.
+#
+#  To change any contact or company info: edit this file, then run `npm run build`.
+#  Nothing below is hardcoded in the HTML templates - the build injects it all,
+#  and also regenerates JSON-LD, sitemap.xml, robots.txt and llms.txt.
+#
+#  Values marked TODO are realistic placeholders. Replace before launch.
+# ============================================================================
+
+site:
+  url: https://intellivraglobal.com
+  name: Intellivra Global
+  locale: en_US
+  language: en
+  logo: /assets/img/logo.svg
+  og_image: /assets/img/og-image.png
+  theme_color: "#0F2A43"
+
+company:
+  legal_name: Intellivra Global LLC          # TODO: confirm the incorporated entity name
+  short_name: Intellivra Global
+  tagline: Pre-vetted engineering talent, delivered in days.
+  description: >-
+    Intellivra Global is an IT staffing and consulting firm that provides
+    pre-vetted engineering talent and delivery teams to US enterprises.
+  description_long: >-
+    Intellivra Global works with US enterprises that need engineering capacity faster
+    than an internal recruiting cycle can deliver it. Every consultant passes a
+    four-stage screen - AI-assisted skills matching, a live interview with a practising
+    engineer, a work-sample review, and employment plus reference verification - before
+    a client ever sees the profile. Roughly one applicant in fourteen reaches submission.
+  founded: "2021"
+  employees_min: 51
+  employees_max: 200
+  registration: ""                            # TODO: EIN / CIN / GST once available
+
+contact:
+  # Where the website contact form delivers. Read by the Netlify function at build time.
+  form_recipient: akram.akram.raza25@gmail.com
+  email: hr@intellivraglobal.com           # TODO: replace with a real mailbox
+  sales_email: sales@intellivraglobal.com     # TODO: replace with a real mailbox
+  careers_email: careers@intellivraglobal.com # TODO: replace with a real mailbox
+  phone: "+1 (469) 555-0142"                  # TODO: replace with the real number
+  phone_raw: "+14695550142"                   # E.164, used for tel: links and schema
+  whatsapp: "+1 (469) 555-0142"               # TODO: replace with the real number
+  whatsapp_raw: "14695550142"                 # digits only, used for wa.me links
+  whatsapp_message: Hi Intellivra Global, I'd like to talk about a hiring requirement.
+
+forms:
+  # Primary path: the Netlify serverless function (netlify/functions/send-contact.js).
+  endpoint: /.netlify/functions/send-contact
+  # Zero-backend fallback. Paste a Web3Forms access key here and set provider to
+  # "web3forms" to bypass the function entirely. See the README.
+  provider: netlify                           # netlify | web3forms
+  web3forms_endpoint: https://api.web3forms.com/submit
+  web3forms_access_key: ""                    # TODO (only if provider is web3forms)
+  success_message: Thank you. Your message has reached our team, and a consultant will reply within one business day.
+  error_message: We could not send your message just now. Please email us directly, or try again in a moment.
+  honeypot_field: company_website
+
+business_hours:
+  summary: Monday to Friday, 8:00 AM - 7:00 PM US Central Time
+  note: Delivery teams in India provide overlap coverage until 11:00 PM IST.
+  schedule:
+    - days: [Monday, Tuesday, Wednesday, Thursday, Friday]
+      opens: "08:00"
+      closes: "19:00"
+      timezone: America/Chicago
+
+offices:
+  - id: us-hq
+    label: US Headquarters
+    primary: true
+    street: 1301 Central Expressway South, Suite 200   # TODO: real registered address
+    locality: Allen
+    region: TX
+    region_name: Texas
+    postal_code: "75013"
+    country: United States
+    country_code: US
+    phone: "+1 (469) 555-0142"
+    phone_raw: "+14695550142"
+    email: hello@intellivraglobal.com
+    hours: Mon-Fri, 8:00 AM - 7:00 PM CT
+
+social:
+  - name: LinkedIn
+    key: linkedin
+    url: https://www.linkedin.com/company/intellivraglobal   # TODO: real profile
+  - name: X
+    key: x
+    url: https://x.com/intellivra                            # TODO: real profile
+  - name: GitHub
+    key: github
+    url: https://github.com/intellivraglobal                 # TODO: real profile
+
+maps:
+  # TODO: paste the real Google Maps embed URL for the head office
+  embed_url: https://www.google.com/maps?q=1301+Central+Expressway+South,+Allen,+TX+75013&output=embed
+  link_url: https://www.google.com/maps/search/?api=1&query=1301+Central+Expressway+South+Allen+TX+75013
+  title: Map showing the Intellivra Global head office in Allen, Texas
+
+legal:
+  copyright_holder: Intellivra Global LLC
+  footer_text: Intellivra Global is an equal opportunity employer and an E-Verify participating employer.
+  privacy_note: We never sell candidate or client data.
+
+# ---------------------------------------------------------------------------
+#  Service lines. Drives the services page, the home page cards, the footer
+#  menu, the site search index and the Service JSON-LD - all from this list.
+# ---------------------------------------------------------------------------
+services:
+  - id: staff-augmentation
+    name: IT Staff Augmentation
+    short_name: IT staff augmentation
+    service_type: IT staff augmentation
+    icon: users
+    card: Add vetted engineers to your existing squads under your own management, on an hourly bill rate with no long-term commitment.
+    card_meta: "Typical start: 5-10 business days"
+    schema_description: >-
+      Intellivra Global adds pre-vetted engineers to an existing in-house team on an hourly
+      bill rate, under the client's own management and delivery process.
+    lead: >-
+      IT staff augmentation is the practice of adding external engineers to an existing
+      in-house team under the client's own management. Intellivra Global supplies those
+      engineers on an hourly bill rate, typically within five to ten business days.
+    body:
+      - >-
+        You keep the backlog, the standups and the definition of done. We carry payroll,
+        benefits, insurance and compliance, and we replace anyone who is not working out
+        inside the first 30 days at no extra cost. Engagements start at three months and
+        roll month to month afterwards with two weeks' notice.
+      - >-
+        Common roles: senior full-stack, backend and frontend engineers, data engineers,
+        cloud and platform engineers, SREs, QA automation engineers, business analysts and
+        Scrum masters.
+    panel_title: At a glance
+    panel:
+      - label: "Pricing:"
+        text: hourly bill rate, margin disclosed on request
+      - label: "Time to start:"
+        text: 5-10 business days
+      - label: "Minimum term:"
+        text: 3 months, then month to month
+      - label: "Guarantee:"
+        text: 30-day replacement
+      - label: "Worker classification:"
+        text: W2, C2C or 1099
+      - label: "Best for:"
+        text: known scope, your process, your management
+    cta: Request engineers
+    search_terms: hourly bill rate contractors augmentation team capacity W2 C2C 1099 replacement guarantee
+
+  - id: contract-hire
+    name: Contract & Contract-to-Hire
+    short_name: Contract & contract-to-hire
+    service_type: Contract and contract-to-hire staffing
+    icon: document
+    card: Trial an engineer on our payroll, then convert with no conversion fee after six months of billing.
+    card_meta: W2, C2C and 1099 supported
+    schema_description: >-
+      Intellivra Global places consultants on contract or contract-to-hire terms, carrying
+      payroll, benefits and compliance until the client converts the consultant to their
+      own payroll.
+    lead: >-
+      Contract-to-hire lets a company evaluate an engineer on a contract basis before
+      converting them to a permanent employee. Intellivra Global waives the conversion fee
+      after six months of continuous billing.
+    body:
+      - >-
+        This is the lowest-risk way to fill a role when the budget sits in operating expense
+        rather than headcount, or when a team wants to see real work before committing. The
+        consultant stays on our payroll, with health cover, PTO accrual and I-9 or E-Verify
+        handled by us, and moves across on a date you choose.
+      - >-
+        We support H-1B transfers, OPT and CPT candidates where client policy allows, and we
+        handle the immigration paperwork rather than pushing it to the candidate.
+    panel_title: At a glance
+    panel:
+      - label: "Pricing:"
+        text: hourly bill rate; no conversion fee after 6 months
+      - label: "Early conversion:"
+        text: prorated buyout, agreed up front
+      - label: "Time to start:"
+        text: 5-10 business days
+      - label: "Compliance:"
+        text: I-9, E-Verify and state registrations handled
+      - label: "Visa support:"
+        text: H-1B transfer, OPT, CPT where permitted
+      - label: "Best for:"
+        text: validating fit before adding headcount
+    cta: Discuss a contract role
+    search_terms: contract to hire conversion fee temp to perm payroll H-1B OPT CPT E-Verify
+
+  - id: direct-placement
+    name: Direct Placement
+    short_name: Direct placement
+    service_type: Direct placement recruiting
+    icon: star
+    card: Permanent hires sourced and closed by recruiters who specialise in one technology domain, with a 90-day guarantee.
+    card_meta: 18-22% of first-year base salary
+    schema_description: >-
+      Intellivra Global recruits permanent employees for enterprise technology teams, billed
+      as a percentage of first-year base salary with a 90-day replacement guarantee.
+    lead: >-
+      Direct placement is permanent hiring: Intellivra Global sources, screens and closes a
+      full-time employee for your payroll, billed at 18 to 22 percent of first-year base
+      salary with a 90-day replacement guarantee.
+    body:
+      - >-
+        Recruiters are organised by technology domain rather than by industry, so the person
+        calling a Kubernetes engineer has placed Kubernetes engineers before and can hold a
+        credible conversation about the role. We work contingent by default; retained search
+        is available for leadership roles where confidentiality matters.
+      - >-
+        You get a written intake document, weekly pipeline reporting, structured interview
+        feedback and offer management including counter-offer risk assessment.
+    panel_title: At a glance
+    panel:
+      - label: "Pricing:"
+        text: 18-22% of first-year base salary
+      - label: "Guarantee:"
+        text: 90-day replacement
+      - label: "Model:"
+        text: contingent by default, retained on request
+      - label: "Median close:"
+        text: 11 days from first submission
+      - label: "Reporting:"
+        text: weekly pipeline and market feedback
+      - label: "Best for:"
+        text: funded headcount and leadership hires
+    cta: Start a search
+    search_terms: permanent hiring placement fee retained contingent full-time employee offer management
+
+  - id: ai-data
+    name: AI & Data Engineering Solutions
+    short_name: AI & data engineering
+    service_type: AI and data engineering
+    icon: database
+    card: Lakehouse pipelines, feature stores and production LLM applications built with evaluation and governance from day one.
+    card_meta: Databricks, Snowflake, dbt, Airflow
+    schema_description: >-
+      Intellivra Global designs and builds data platforms, machine learning pipelines and
+      production LLM applications, including evaluation harnesses and model governance
+      documentation.
+    lead: >-
+      Intellivra Global builds data platforms and production AI systems: lakehouse pipelines,
+      feature stores, retrieval-augmented applications and the evaluation harnesses that keep
+      them honest once they are live.
+    body:
+      - >-
+        Most AI projects stall in the gap between a working prototype and something an
+        enterprise can run. We close that gap: data contracts and lineage so pipelines fail
+        loudly, offline and online evaluation so quality is measured rather than assumed, and
+        model documentation written for the risk and compliance review that will inevitably
+        follow.
+      - >-
+        Typical stack: Databricks, Snowflake, dbt, Airflow, Kafka, Spark, Python, PyTorch,
+        vector databases and the major model providers.
+    panel_title: What we deliver
+    panel:
+      - text: Lakehouse and warehouse builds with dbt models and tests
+      - text: Streaming and batch pipelines with lineage and quality gates
+      - text: Feature stores and ML training or inference pipelines
+      - text: RAG assistants with retrieval evaluation and guardrails
+      - text: Model risk documentation for regulated review boards
+      - text: "BI enablement: semantic layer, metric definitions, dashboards"
+    cta: Scope a data project
+    search_terms: lakehouse warehouse pipelines RAG LLM machine learning evaluation governance Databricks Snowflake dbt Airflow Kafka Spark
+
+  - id: cloud-devops
+    name: Cloud & DevOps
+    short_name: Cloud & DevOps
+    service_type: Cloud and DevOps engineering
+    icon: cloud
+    card: Landing zones, Kubernetes platforms and CI/CD paths that cut deployment lead time and pass audit.
+    card_meta: AWS, Azure, GCP, Terraform
+    schema_description: >-
+      Intellivra Global builds AWS, Azure and GCP landing zones, Kubernetes platforms and
+      CI/CD delivery paths, with infrastructure as code and audit-ready controls.
+    lead: >-
+      Intellivra Global builds and hardens cloud platforms on AWS, Azure and GCP, and the
+      delivery paths that run on them, so product teams ship more often without waiting on a
+      central platform queue.
+    body:
+      - >-
+        Work usually starts with a landing zone or an account structure that has grown
+        organically, then moves to Terraform modules, a golden CI/CD path, Kubernetes
+        baselines, and observability with SLOs that on-call engineers actually use. Cost
+        optimisation is treated as an engineering deliverable, not a spreadsheet exercise.
+      - >-
+        Typical stack: Terraform, Kubernetes, GitHub Actions, GitLab CI, Argo CD,
+        OpenTelemetry, Datadog, Prometheus and Grafana.
+    panel_title: What we deliver
+    panel:
+      - text: Multi-account landing zones with guardrails as code
+      - text: Terraform module libraries and drift control
+      - text: Kubernetes platform baselines and upgrade runbooks
+      - text: CI/CD golden paths with progressive delivery
+      - text: Observability, SLOs and incident runbooks
+      - text: "FinOps: tagging, showback and rightsizing"
+    cta: Talk to a platform lead
+    search_terms: AWS Azure GCP Terraform Kubernetes EKS CI CD Argo observability SLO FinOps landing zone
+
+  - id: managed-teams
+    name: Managed Teams
+    short_name: Managed teams
+    service_type: Managed delivery teams
+    icon: grid
+    card: A product-shaped pod - lead, engineers, QA - accountable for outcomes under a statement of work.
+    card_meta: Priced per sprint or milestone
+    schema_description: >-
+      Intellivra Global runs an outcome-based delivery pod with a named lead, engineers and
+      QA, priced per sprint or milestone under a statement of work.
+    lead: >-
+      A managed team is an Intellivra Global delivery pod - a named lead, engineers and QA -
+      that owns an agreed outcome under a statement of work, priced per sprint or per
+      milestone rather than per hour.
+    body:
+      - >-
+        Choose this when the work is definable and you would rather buy a result than manage
+        contractors. We agree acceptance criteria before anything is built, report against
+        them every sprint, and keep one person accountable for the whole thing. Teams can be
+        US-based, blended with our India delivery centre, or fully offshore with a guaranteed
+        four-hour overlap with your working day.
+      - >-
+        Typical pods: platform modernisation, data platform build-out, application migration,
+        QA automation and sustained product engineering.
+    panel_title: At a glance
+    panel:
+      - label: "Pricing:"
+        text: per sprint or per milestone under an SOW
+      - label: "Team size:"
+        text: typically 4-9 people
+      - label: "Time to productive:"
+        text: about 3 weeks
+      - label: "Accountability:"
+        text: one named delivery lead
+      - label: "Coverage:"
+        text: onshore, blended or offshore with 4-hour overlap
+      - label: "Best for:"
+        text: definable scope and fixed outcomes
+    cta: Scope a managed team
+    search_terms: statement of work SOW outcome based delivery pod offshore blended nearshore milestone pricing
+
+# ---------------------------------------------------------------------------
+#  Industries. Drives the industries page, the home page grid and site search.
+# ---------------------------------------------------------------------------
+industries:
+  - id: healthcare
+    name: Healthcare
+    card: HIPAA-aware engineers for payer, provider and health-tech platforms, including HL7 and FHIR integration work.
+    lead: >-
+      Intellivra Global staffs healthcare payers, providers and health-technology companies
+      with engineers who have worked inside HIPAA scope and understand protected health
+      information handling before their first day.
+    body: >-
+      Typical work: claims and eligibility platform modernisation, HL7 v2 and FHIR
+      integration, EHR data extraction into analytics platforms, patient-facing portals, and
+      care-management reporting. Candidates for PHI-adjacent roles complete HIPAA training
+      and an OIG exclusion check as part of onboarding.
+    roles:
+      - Integration engineers (HL7, FHIR, Mirth, Rhapsody)
+      - Epic and Cerner analysts and report writers
+      - Healthcare data engineers and actuarial data analysts
+      - Cloud engineers with HITRUST or HIPAA experience
+      - QA engineers for regulated release processes
+    search_terms: HIPAA PHI HL7 FHIR Epic Cerner payer provider HITRUST OIG claims eligibility
+
+  - id: bfsi
+    name: Banking, Financial Services & Insurance
+    short_name: Banking & financial services
+    card: Engineers who have worked under model risk management, SOX controls and PCI DSS scope.
+    lead: >-
+      Intellivra Global places engineers in banks, insurers, payment companies and capital
+      markets firms, where the constraint is rarely the technology and almost always the
+      control environment around it.
+    body: >-
+      Typical work: core banking and payments integration, fraud and AML analytics, model
+      risk management documentation for machine learning features, PCI DSS scope reduction,
+      and regulatory reporting pipelines. Candidates can be screened against FINRA
+      registration, credit checks and enhanced background requirements where the client's
+      policy calls for it.
+    roles:
+      - Java, .NET and Python engineers for core platforms
+      - Data engineers for risk, finance and regulatory reporting
+      - ML engineers working under model risk governance
+      - Cloud and security engineers in PCI or SOX scope
+      - Business analysts with payments or lending domain depth
+    search_terms: banking payments fraud AML model risk PCI DSS SOX FINRA capital markets insurance lending
+
+  - id: retail
+    name: Retail & E-commerce
+    card: "Peak-season scale: order management, personalisation and demand forecasting teams."
+    lead: >-
+      Intellivra Global staffs retail and e-commerce technology teams on a seasonal rhythm:
+      capacity ramps before peak, hardens through peak, and converts the keepers afterwards.
+    body: >-
+      Typical work: order management and fulfilment integration, storefront performance,
+      personalisation and recommendation systems, demand forecasting, inventory visibility
+      across channels, and the load-testing programme that has to be finished before the code
+      freeze in October.
+    roles:
+      - Commerce platform engineers (Shopify, SFCC, commercetools)
+      - Frontend engineers focused on Core Web Vitals
+      - Data scientists for pricing and demand forecasting
+      - Integration engineers for OMS, WMS and ERP
+      - SREs for peak readiness and load testing
+    search_terms: retail ecommerce order management fulfilment personalisation forecasting OMS WMS Shopify peak season
+
+  - id: manufacturing
+    name: Manufacturing
+    card: MES, IIoT and shop-floor data integration engineers who understand OT and IT boundaries.
+    lead: >-
+      Intellivra Global supplies manufacturers with engineers who can work across the OT and
+      IT boundary - people who are comfortable with both a historian and a data warehouse.
+    body: >-
+      Typical work: MES and ERP integration, IIoT telemetry pipelines from the plant floor,
+      predictive maintenance models, quality analytics, digital twin data foundations, and
+      the unglamorous network segmentation work that has to precede any of it.
+    roles:
+      - MES and SCADA integration engineers
+      - IIoT and edge data engineers (OPC UA, MQTT)
+      - SAP and ERP integration consultants
+      - Data scientists for predictive maintenance
+      - OT security engineers
+    search_terms: manufacturing MES SCADA IIoT OPC UA MQTT predictive maintenance SAP digital twin OT security
+
+  - id: energy
+    name: Energy & Utilities
+    card: Grid analytics, asset performance and NERC CIP-aware platform engineering.
+    lead: >-
+      Intellivra Global works with utilities, grid operators and renewable energy developers
+      on asset, meter and market data platforms, with NERC CIP awareness where the systems sit
+      inside the electronic security perimeter.
+    body: >-
+      Typical work: AMI and meter data management pipelines, outage and asset performance
+      analytics, renewable generation forecasting, GIS data integration, and trading and
+      settlement reporting. Personnel risk assessment and CIP-004 training requirements are
+      handled during onboarding rather than discovered at go-live.
+    roles:
+      - Meter data and time-series engineers
+      - GIS and asset management analysts
+      - Forecasting data scientists for generation and load
+      - Cloud engineers with NERC CIP exposure
+      - SCADA and EMS integration specialists
+    search_terms: energy utilities grid AMI meter data NERC CIP outage GIS renewable forecasting settlement
+
+  - id: technology
+    name: Technology & SaaS
+    card: Product engineers and platform teams for scale-ups shipping against tight release trains.
+    lead: >-
+      Intellivra Global helps software companies add product engineers and platform teams
+      without slowing the release train, usually in the window between a funding round and a
+      full internal recruiting build-out.
+    body: >-
+      Typical work: sustained product engineering pods, multi-tenant platform hardening,
+      developer experience and build performance, migration off legacy services, QA automation
+      build-out, and AI feature teams working alongside an existing product group.
+    roles:
+      - Senior full-stack and backend product engineers
+      - Platform and developer-experience engineers
+      - SREs and observability engineers
+      - QA automation engineers
+      - AI and LLM application engineers
+    search_terms: SaaS product engineering platform developer experience multi-tenant QA automation observability
+
+# ---------------------------------------------------------------------------
+#  FAQs. The visible accordions AND the FAQPage JSON-LD are both generated
+#  from these entries, so the two can never drift apart.
+# ---------------------------------------------------------------------------
+faqs:
+  home:
+    - q: How fast can Intellivra Global submit candidates?
+      a: >-
+        Intellivra Global submits three to five pre-vetted profiles within 48 hours of an
+        approved job description. Every candidate has already completed a structured technical
+        screen and a work-sample review, so client interviews usually start in the same week.
+    - q: What engagement models does Intellivra Global offer?
+      a: >-
+        Intellivra Global offers four engagement models: IT staff augmentation on an hourly
+        bill rate, contract and contract-to-hire, direct placement on a percentage of
+        first-year salary, and outcome-based managed teams delivered under a statement of work.
+    - q: What is the difference between staff augmentation and a managed team?
+      a: >-
+        In staff augmentation the client manages the engineer day to day and pays for time. In
+        a managed team, Intellivra Global owns the delivery plan, the team composition and the
+        agreed outcomes, and the client pays for milestones defined in a statement of work.
+    - q: How does Intellivra Global vet engineers?
+      a: >-
+        Every candidate passes a four-stage screen: an AI-assisted resume and skills match
+        against the requisition, a live technical interview with a practising engineer, a
+        work-sample or code review, and employment plus reference verification. Roughly one in
+        fourteen applicants reaches a client submission.
+    - q: Does Intellivra Global support W2, C2C and 1099 engagements?
+      a: >-
+        Yes. Intellivra Global engages consultants on W2, corp-to-corp and 1099 terms in the
+        United States, and supports H-1B transfers, E-Verify onboarding and OPT or CPT
+        candidates where the role and client policy allow.
+    - q: How is Intellivra Global priced?
+      a: >-
+        Contract roles are billed at a transparent hourly rate with the margin disclosed on
+        request. Direct placement is billed as a percentage of first-year base salary,
+        typically 18 to 22 percent. Managed teams are priced per sprint or per milestone under
+        a statement of work.
+    - q: Is there a replacement guarantee?
+      a: >-
+        Yes. Contract placements carry a 30-day replacement guarantee and direct placements
+        carry a 90-day guarantee. If a placed professional leaves or is released for
+        performance inside that window, Intellivra Global replaces them at no additional fee.
+    - q: Can Intellivra Global work through our VMS or MSP programme?
+      a: >-
+        Yes. Intellivra Global is set up to work as a subcontractor or tier-two supplier inside
+        vendor management systems such as Fieldglass, Beeline and Coupa, and can also contract
+        directly with procurement outside a managed service programme.
+  services:
+    - q: Which engagement model should we choose for a single hard-to-fill role?
+      a: >-
+        For one hard-to-fill role, use direct placement if the work is permanent and funded
+        from headcount, and contract-to-hire if the budget sits in operating expense or the
+        team wants to validate fit first. Both routes draw from the same vetted talent pool at
+        Intellivra Global.
+    - q: What is the minimum contract length for staff augmentation?
+      a: >-
+        The minimum staff augmentation engagement is three months, with a two-week notice
+        period after the first 30 days. Shorter advisory engagements are handled as fixed-scope
+        statements of work instead.
+    - q: Can Intellivra Global staff an entire offshore delivery team?
+      a: >-
+        Yes. Intellivra Global runs blended teams with US-based leads and engineers in the
+        India delivery centre, with a minimum four-hour overlap with US business hours and a
+        single point of accountability for delivery.
+    - q: How long does it take to stand up a managed team?
+      a: >-
+        A managed team of four to six people is typically productive within three weeks: one
+        week for scoping and acceptance criteria, one week for staffing from the vetted bench,
+        and one week for environment access and onboarding.
+    - q: Who owns the intellectual property created during an engagement?
+      a: >-
+        The client owns all work product. Intellivra Global assigns intellectual property in
+        the master services agreement, and every consultant signs a matching assignment and
+        confidentiality agreement before the engagement starts.
+    - q: Does Intellivra Global provide background checks and drug screening?
+      a: >-
+        Yes. Standard onboarding includes identity and right-to-work verification, a seven-year
+        criminal background check and employment verification. Drug screening, fingerprinting
+        and client-specific checks such as OIG or FINRA are available on request.
+    - q: How does Intellivra Global handle rate transparency?
+      a: >-
+        Intellivra Global discloses the pay rate, the bill rate and the margin on request for
+        any contract placement, and shares the market rate data used to set the range so
+        procurement can benchmark the number independently.
+    - q: What happens if a placed consultant is not performing?
+      a: >-
+        Raise it with the account lead and Intellivra Global starts a replacement search the
+        same day. Contract placements carry a 30-day replacement guarantee and direct
+        placements 90 days, and hours billed for the replacement search are not charged.
+
+# ---------------------------------------------------------------------------
+#  Metrics quoted on the home and about pages.
+#  TODO: refresh from the ATS and finance each quarter.
+# ---------------------------------------------------------------------------
+metrics:
+  as_of: June 2026
+  period: January 2025 to June 2026
+  stats:
+    - value: 48 hrs
+      label: Median time from approved job description to first shortlist
+    - value: 1 in 14
+      label: Applicants that clear vetting and reach a client submission
+    - value: 92%
+      label: Contract engagements extended beyond the initial term
+    - value: 11 days
+      label: Median time from first submission to signed offer
+
+# ---------------------------------------------------------------------------
+#  AI crawlers explicitly allowed in robots.txt.
+# ---------------------------------------------------------------------------
+crawlers:
+  search: [Googlebot, Bingbot, DuckDuckBot, Applebot, Slurp]
+  ai:
+    - GPTBot
+    - OAI-SearchBot
+    - ChatGPT-User
+    - ClaudeBot
+    - Claude-SearchBot
+    - Claude-User
+    - anthropic-ai
+    - PerplexityBot
+    - Perplexity-User
+    - Google-Extended
+    - Bingbot-Extended
+    - CCBot
+    - FacebookBot
+    - meta-externalagent
+    - Applebot-Extended
+    - Amazonbot
+    - MistralAI-User
+    - YouBot
+    - cohere-ai
+    - Diffbot
+    - Timpibot

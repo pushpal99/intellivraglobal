@@ -1,0 +1,110 @@
+name: Build and Deploy
+
+# ============================================================================
+#  Intellivra Global - CI/CD
+#
+#  Pull request  -> build + lint only (no deploy)
+#  Push to main  -> build + lint + deploy to Netlify production
+#                   (merging a PR into main is a push to main, so merges deploy)
+#
+#  Secrets required in GitHub (Settings > Secrets and variables > Actions):
+#    NETLIFY_AUTH_TOKEN   Netlify personal access token
+#    NETLIFY_SITE_ID      the Netlify site's API ID
+#
+#  EMAIL_API_KEY is NOT set here. It lives in the Netlify environment so the
+#  serverless function can read it at runtime and it never touches this repo.
+# ============================================================================
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# ---------------------------------------------------------------------------
+#  Tunable deploy settings - change these, not the steps below.
+# ---------------------------------------------------------------------------
+env:
+  NODE_VERSION: "20"
+  BUILD_COMMAND: "npm run build"
+  PUBLISH_DIR: "dist"
+  FUNCTIONS_DIR: "netlify/functions"
+  SITE_NAME: "intellivraglobal"
+  NETLIFY_CLI_VERSION: "17"
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site from config/site.yaml
+        run: ${{ env.BUILD_COMMAND }}
+
+      - name: Lint (contacts, structured data, SEO and accessibility audit)
+        run: npm run lint
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ${{ env.PUBLISH_DIR }}
+          retention-days: 7
+
+  deploy:
+    name: Deploy to Netlify
+    needs: build
+    # Only real pushes to main deploy. Pull requests stop after the build job.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://intellivraglobal.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Rebuild rather than reuse the artifact: the build also writes
+      # netlify/functions/_site-config.json, which the function needs.
+      - name: Build site from config/site.yaml
+        run: ${{ env.BUILD_COMMAND }}
+
+      - name: Deploy with the Netlify CLI
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx --yes netlify-cli@${{ env.NETLIFY_CLI_VERSION }} deploy \
+            --prod \
+            --dir="${{ env.PUBLISH_DIR }}" \
+            --functions="${{ env.FUNCTIONS_DIR }}" \
+            --site="$NETLIFY_SITE_ID" \
+            --message="${{ env.SITE_NAME }} @ ${{ github.sha }}"

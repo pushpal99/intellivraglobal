@@ -1,0 +1,325 @@
+<!--meta
+{
+  "id": "home",
+  "output": "index.html",
+  "nav": "Home",
+  "nav_order": 1,
+  "title": "{{company.short_name}} | IT Staffing and Consulting Firm",
+  "description": "{{company.short_name}} is an IT staffing and consulting firm that places pre-vetted engineers with US enterprises in days, not months.",
+  "twitter_description": "{{company.short_name}} places pre-vetted engineers with US enterprises in days, not months.",
+  "schema_type": "WebPage",
+  "faq": "home",
+  "priority": "1.0",
+  "changefreq": "weekly"
+}
+-->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__grid">
+    <div>
+      <span class="eyebrow">IT staffing &middot; consulting &middot; digital engineering</span>
+      <h1 id="hero-title">IT staffing and consulting for teams that ship</h1>
+      <p class="hero__lede">
+        {{ company.short_name }} is an IT staffing and consulting firm that provides pre-vetted
+        engineering talent to US enterprises. Most roles receive a shortlist within 48 hours,
+        and every consultant is screened by practising engineers before you ever see a resume.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/contact.html">Hire engineering talent</a>
+        <a class="btn btn--secondary" href="/services.html">See how we engage</a>
+      </div>
+      <ul class="hero__proof">
+        <li>48-hour shortlists</li>
+        <li>1 in 14 applicants submitted</li>
+        <li>92% contract extension rate</li>
+      </ul>
+    </div>
+
+    <div class="hero__art">
+      <figure class="figure-abstract">
+        <svg viewBox="0 0 420 300" role="img" aria-labelledby="hero-art-title" focusable="false">
+          <title id="hero-art-title">Vetting funnel: 1,000 applicants narrow to 70 screened, 12 interviewed and 4 submitted</title>
+          <g font-family="Inter, sans-serif" font-size="13">
+            <text x="20" y="22" fill="#5a6572" font-size="11" letter-spacing="1">FROM SOURCED TO SUBMITTED</text>
+            <rect x="20" y="38" width="380" height="44" rx="4" fill="#f7f8fa" stroke="#e1e6ec" />
+            <text x="34" y="65" fill="#16202b" font-weight="600">1,000</text>
+            <text x="92" y="65" fill="#3c4653">applicants sourced</text>
+
+            <rect x="20" y="94" width="290" height="44" rx="4" fill="#f7f8fa" stroke="#e1e6ec" />
+            <text x="34" y="121" fill="#16202b" font-weight="600">70</text>
+            <text x="72" y="121" fill="#3c4653">pass the skills match</text>
+
+            <rect x="20" y="150" width="200" height="44" rx="4" fill="#eef1f5" stroke="#c8d0da" />
+            <text x="34" y="177" fill="#16202b" font-weight="600">12</text>
+            <text x="72" y="177" fill="#3c4653">pass the interview</text>
+
+            <rect x="20" y="206" width="130" height="46" rx="4" fill="#1f5f8b" />
+            <text x="34" y="234" fill="#ffffff" font-weight="600">4</text>
+            <text x="60" y="234" fill="#ffffff">submitted</text>
+
+            <text x="20" y="278" fill="#5a6572" font-size="11">Typical funnel for one enterprise requisition</text>
+          </g>
+        </svg>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="proof-title">
+  <div class="wrap">
+    <h2 id="proof-title" class="sr-only">Delivery metrics</h2>
+    <dl class="stats">
+      {{#each metrics.stats}}
+      <div class="stat">
+        <dd>{{ this.value }}</dd>
+        <dt>{{ this.label }}</dt>
+      </div>
+      {{/each}}
+    </dl>
+    <p class="note note--center">Figures reflect {{ company.short_name }} engagements from {{ metrics.period }}.</p>
+  </div>
+</section>
+
+<section class="section section--alt" id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Services</span>
+      <h2 id="services-title">Six ways enterprises engage {{ company.short_name }}</h2>
+      <p class="lede">
+        {{ company.short_name }} delivers IT staffing and consulting through six service lines:
+        staff augmentation, contract and contract-to-hire, direct placement, AI and data
+        engineering, cloud and DevOps, and fully managed delivery teams.
+      </p>
+    </div>
+
+    <div class="grid grid--3">
+      {{#each services}}
+      <article class="card card--link">
+        <div class="card__icon" aria-hidden="true">{{{ this.icon_svg }}}</div>
+        <h3><a class="card__stretch" href="/services.html#{{ this.id }}">{{ this.short_name }}</a></h3>
+        <p>{{ this.card }}</p>
+        <p class="card__meta">{{ this.card_meta }}</p>
+      </article>
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why-intellivra" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Why {{ company.short_name }}</span>
+      <h2 id="why-title">Three things typical staffing firms do not do</h2>
+      <p class="lede">
+        {{ company.short_name }} differs from a traditional staffing agency in three measurable
+        ways: shortlists arrive in 48 hours instead of two weeks, candidates are screened by
+        engineers with AI-assisted matching rather than keyword search, and engagements can be
+        priced on outcomes instead of hours.
+      </p>
+    </div>
+
+    <div class="grid grid--3">
+      <article class="card">
+        <h3>Speed that is measured, not promised</h3>
+        <p>
+          Our recruiters work from a live bench of 4,000+ engineers who have already completed
+          technical vetting. That is why the median approved-requisition-to-shortlist time is 48
+          hours, against an industry median of roughly two weeks.
+        </p>
+        <ul class="tag-row">
+          <li class="tag tag--accent">48-hour shortlist</li>
+          <li class="tag">11-day median close</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>AI-assisted vetting, human final say</h3>
+        <p>
+          Structured extraction ranks every applicant against the requisition, then a practising
+          engineer runs the live interview and reviews a work sample. The model narrows the field;
+          it never makes the hiring decision, and every rejection reason is recorded.
+        </p>
+        <ul class="tag-row">
+          <li class="tag tag--accent">4-stage screen</li>
+          <li class="tag">1 in 14 submitted</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Outcome-based engagement options</h3>
+        <p>
+          When scope is definable, you can buy the result rather than the hours. Managed teams are
+          priced per sprint or milestone, with acceptance criteria agreed before work starts and a
+          named delivery lead accountable for them.
+        </p>
+        <ul class="tag-row">
+          <li class="tag tag--accent">SOW pricing</li>
+          <li class="tag">Named delivery lead</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="split" style="margin-top: clamp(2.5rem, 5vw, 3.5rem)">
+      <div>
+        <h3 style="font-size:1.2rem;margin-bottom:1.1rem">How an {{ company.short_name }} engagement runs</h3>
+        <ol class="numbered">
+          <li>
+            <h3>Intake call, same day</h3>
+            A recruiter and a technical lead join a 30-minute intake to agree the must-have skills,
+            the interview loop and the target rate before sourcing begins.
+          </li>
+          <li>
+            <h3>Shortlist in 48 hours</h3>
+            You receive three to five profiles with interview notes, a work-sample summary, rate,
+            location and work authorisation on a single page.
+          </li>
+          <li>
+            <h3>Interview and offer</h3>
+            We coordinate scheduling, collect structured feedback and manage the offer, including
+            rate negotiation and counter-offer risk.
+          </li>
+          <li>
+            <h3>Onboarding and check-ins</h3>
+            Background checks, equipment and access are tracked to a start date, then we check in
+            at day 7, day 30 and each quarter.
+          </li>
+        </ol>
+      </div>
+
+      <div class="panel">
+        <h3>What you receive with every shortlist</h3>
+        <ul class="checklist">
+          <li><strong>Interview notes</strong> written by the engineer who ran the screen</li>
+          <li><strong>Work-sample summary</strong> with the specific strengths and gaps found</li>
+          <li><strong>Rate and classification</strong> &mdash; W2, C2C or 1099, stated up front</li>
+          <li><strong>Work authorisation</strong> and earliest realistic start date</li>
+          <li><strong>Location and overlap</strong> with your working hours</li>
+          <li><strong>Market context</strong>: what comparable candidates are accepting</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="industries-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Industries</span>
+      <h2 id="industries-title">Six industries, and the compliance that comes with them</h2>
+      <p class="lede">
+        {{ company.short_name }} staffs and delivers for healthcare, banking and financial
+        services, retail, manufacturing, energy and technology companies &mdash; each with its own
+        regulatory baseline built into how we screen and onboard.
+      </p>
+    </div>
+
+    <div class="grid grid--3">
+      {{#each industries}}
+      <article class="card card--link">
+        <h3><a class="card__stretch" href="/industries.html#{{ this.id }}">{{ this.short_name }}</a></h3>
+        <p>{{ this.card }}</p>
+      </article>
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight" aria-labelledby="clients-title">
+  <div class="wrap">
+    <div class="section__head section__head--center">
+      <h2 id="clients-title" style="font-size:1.0625rem;letter-spacing:0.02em">Trusted by engineering and talent leaders</h2>
+    </div>
+    <div class="logos">
+      <img src="/assets/img/client-logo-1.svg" alt="Northvale, client logo placeholder" width="200" height="48" loading="lazy" decoding="async">
+      <img src="/assets/img/client-logo-2.svg" alt="Merricourt, client logo placeholder" width="200" height="48" loading="lazy" decoding="async">
+      <img src="/assets/img/client-logo-3.svg" alt="Halcyon, client logo placeholder" width="200" height="48" loading="lazy" decoding="async">
+      <img src="/assets/img/client-logo-4.svg" alt="Corvex, client logo placeholder" width="200" height="48" loading="lazy" decoding="async">
+      <img src="/assets/img/client-logo-5.svg" alt="Bluepeak, client logo placeholder" width="200" height="48" loading="lazy" decoding="async">
+      <img src="/assets/img/client-logo-6.svg" alt="Axiomly, client logo placeholder" width="200" height="48" loading="lazy" decoding="async">
+    </div>
+    <!-- TODO: replace the six placeholder marks with real client logos once written
+         permission is on file, and update the alt text to the real company names. -->
+    <p class="note note--center">Placeholder marks. Client names are published only with written permission.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="testimonials-title">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Client feedback</span>
+      <h2 id="testimonials-title">What hiring managers say after the first quarter</h2>
+    </div>
+
+    <div class="grid grid--3">
+      <!-- TODO: replace all three with attributable, approved quotes before launch. -->
+      <figure class="quote">
+        <blockquote>
+          We had three open data engineering roles sitting unfilled for a quarter. Intellivra sent
+          four profiles in two days and we hired two of them. The screening notes were more useful
+          than the interviews we were running ourselves.
+        </blockquote>
+        <figcaption>
+          <strong>Director of Data Platform</strong>
+          Retail group, 12,000 employees
+        </figcaption>
+      </figure>
+
+      <figure class="quote">
+        <blockquote>
+          The managed pod model let us treat a migration as a deliverable instead of a headcount
+          problem. Acceptance criteria were agreed up front and we paid against milestones.
+        </blockquote>
+        <figcaption>
+          <strong>VP Engineering</strong>
+          Healthcare payer
+        </figcaption>
+      </figure>
+
+      <figure class="quote">
+        <blockquote>
+          What stood out was the honesty on rates. We saw the bill rate breakdown and the market
+          data behind it, which made the internal approval straightforward.
+        </blockquote>
+        <figcaption>
+          <strong>Head of Talent Acquisition</strong>
+          Financial services firm
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="section__head section__head--center">
+      <span class="eyebrow">FAQ</span>
+      <h2 id="faq-title">IT staffing questions, answered plainly</h2>
+      <p class="lede">
+        Engagement models, vetting, pricing and guarantees &mdash; the questions procurement and
+        hiring managers ask us most often.
+      </p>
+    </div>
+
+    <div class="faq">
+      {{#each faqs.home}}
+      <details{{#if @first}} open{{/if}}>
+        <summary>{{ this.q }}</summary>
+        <div class="faq__body"><p>{{ this.a }}</p></div>
+      </details>
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+<section class="section section--navy on-navy" aria-labelledby="cta-title">
+  <div class="wrap cta">
+    <h2 id="cta-title">Tell us the role. We will send a shortlist in 48 hours.</h2>
+    <p>
+      Share one job description and we will come back with vetted profiles, current market rates
+      and a realistic time to fill &mdash; no retainer, no exclusivity.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/contact.html">Start a requirement</a>
+      <a class="btn btn--secondary" href="mailto:{{ contact.sales_email }}?subject={{ subject_new_requirement }}">Email our team</a>
+    </div>
+  </div>
+</section>

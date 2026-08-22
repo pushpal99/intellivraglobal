@@ -5,8 +5,10 @@
  * Parses every <script type="application/ld+json"> block in every page and
  * reports invalid JSON, missing @context/@type, and empty required fields.
  *
- *   node tools/validate-jsonld.js         # validate (exit 1 on failure)
+ *   node tools/validate-jsonld.js         # validate dist/ (exit 1 on failure)
  *   node tools/validate-jsonld.js --fix   # also strip trailing commas and reformat
+ *
+ * dist/ is generated, so run `npm run build` first.
  */
 
 'use strict';
@@ -14,9 +16,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.join(path.resolve(__dirname, '..'), 'dist');
 const FIX = process.argv.includes('--fix');
 const BLOCK = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
+
+if (!fs.existsSync(ROOT)) {
+  console.error('dist/ not found. Run `npm run build` first.');
+  process.exit(1);
+}
 
 const pages = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'));
 let failures = 0;
