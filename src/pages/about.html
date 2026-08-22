@@ -26,8 +26,7 @@
     <h1 id="page-title">We exist because technical hiring is slower than it needs to be</h1>
     <p class="lede">
       {{ company.short_name }} is an IT staffing and consulting firm founded in
-      {{ company.founded }}, with a US headquarters in {{ offices.0.region_name }} and a delivery
-      centre in {{ offices.1.locality }}, {{ offices.1.country }}. We place pre-vetted engineers
+      {{ company.founded }}, with a US headquarters in {{ offices.0.region_name }}. We place pre-vetted engineers
       with enterprises and run managed delivery teams for work that is better bought as an outcome
       than as hours.
     </p>
@@ -101,7 +100,7 @@
           understanding, with <em>vara</em>, a Sanskrit word meaning choice or excellence &mdash;
           the two halves of the business. The Latin half is the judgement we apply to a
           requisition; the Sanskrit half is the standard we hold candidates to, and a nod to the
-          delivery team in {{ offices.1.locality }} who make up half the company.
+          delivery team.
         </p>
         <p class="muted">
           &ldquo;Global&rdquo; is literal rather than aspirational: the company runs on two
@@ -160,7 +159,7 @@
     </div>
     <dl class="stats">
       <div class="stat"><dd>{{ company.founded }}</dd><dt>Founded, with the India delivery centre opened in 2023</dt></div>
-      <div class="stat"><dd>{{ office_count }}</dd><dt>Offices: {{ offices.0.locality }}, {{ offices.0.region }} and {{ offices.1.locality }}, {{ offices.1.country }}</dt></div>
+      <div class="stat"><dd>{{ office_count }}</dd><dt>Offices: {{ offices.0.locality }}, {{ offices.0.region }}</dt></div>
       <div class="stat"><dd>4,000+</dd><dt>Engineers in the continuously vetted talent pool</dt></div>
       <div class="stat"><dd>{{ industry_count }}</dd><dt>Industries served, from healthcare to energy</dt></div>
     </dl>

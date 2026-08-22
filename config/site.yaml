@@ -40,7 +40,7 @@ company:
 contact:
   # Where the website contact form delivers. Read by the Netlify function at build time.
   form_recipient: akram.akram.raza25@gmail.com
-  email: hello@intellivraglobal.com           # TODO: replace with a real mailbox
+  email: hr@intellivraglobal.com           # TODO: replace with a real mailbox
   sales_email: sales@intellivraglobal.com     # TODO: replace with a real mailbox
   careers_email: careers@intellivraglobal.com # TODO: replace with a real mailbox
   phone: "+1 (469) 555-0142"                  # TODO: replace with the real number
@@ -85,20 +85,6 @@ offices:
     phone_raw: "+14695550142"
     email: hello@intellivraglobal.com
     hours: Mon-Fri, 8:00 AM - 7:00 PM CT
-  - id: in-dc
-    label: India Delivery Centre
-    primary: false
-    street: Fifth Floor, Cyber Gateway, HITEC City      # TODO: real registered address
-    locality: Hyderabad
-    region: TG
-    region_name: Telangana
-    postal_code: "500081"
-    country: India
-    country_code: IN
-    phone: "+91 40 5555 0142"
-    phone_raw: "+914055550142"
-    email: delivery@intellivraglobal.com
-    hours: Mon-Fri, 10:00 AM - 8:00 PM IST
 
 social:
   - name: LinkedIn
