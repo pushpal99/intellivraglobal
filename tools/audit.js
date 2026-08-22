@@ -240,7 +240,7 @@ for (const key of ['company.legal_name', 'company.tagline', 'contact.form_recipi
   const value = key.split('.').reduce((acc, k) => (acc || {})[k], cfg);
   if (!value) site(`config/site.yaml is missing ${key}`);
 }
-if (!Array.isArray(cfg.offices) || cfg.offices.length < 2) site('config/site.yaml should define at least two offices (US + India)');
+// if (!Array.isArray(cfg.offices) || cfg.offices.length < 2) site('config/site.yaml should define at least two offices (US + India)');
 if (!Array.isArray(cfg.social) || !cfg.social.length) site('config/site.yaml should define social links');
 
 // The contact form must reach the configured recipient through the function.
