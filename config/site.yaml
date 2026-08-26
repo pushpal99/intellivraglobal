@@ -41,12 +41,12 @@ contact:
   # Where the website contact form delivers. Read by the Netlify function at build time.
   form_recipient: akram.akram.raza25@gmail.com
   email: hr@intellivraglobal.com           # TODO: replace with a real mailbox
-  sales_email: sales@intellivraglobal.com     # TODO: replace with a real mailbox
-  careers_email: careers@intellivraglobal.com # TODO: replace with a real mailbox
-  phone: "+1 (469) 555-0142"                  # TODO: replace with the real number
-  phone_raw: "+14695550142"                   # E.164, used for tel: links and schema
-  whatsapp: "+1 (469) 555-0142"               # TODO: replace with the real number
-  whatsapp_raw: "14695550142"                 # digits only, used for wa.me links
+  sales_email: ""    # TODO: replace with a real mailbox
+  careers_email: " " # TODO: replace with a real mailbox
+  phone: " "                  # TODO: replace with the real number
+  phone_raw: ""                   # E.164, used for tel: links and schema
+  whatsapp: " "               # TODO: replace with the real number
+  whatsapp_raw: ""                 # digits only, used for wa.me links
   whatsapp_message: Hi Intellivra Global, I'd like to talk about a hiring requirement.
 
 forms:
@@ -62,7 +62,7 @@ forms:
   honeypot_field: company_website
 
 business_hours:
-  summary: Monday to Friday, 8:00 AM - 7:00 PM US Central Time
+  summary: " "
   note: Delivery teams in India provide overlap coverage until 11:00 PM IST.
   schedule:
     - days: [Monday, Tuesday, Wednesday, Thursday, Friday]
@@ -72,17 +72,17 @@ business_hours:
 
 offices:
   - id: us-hq
-    label: US Headquarters
+    label: ""
     primary: true
-    street: 1301 Central Expressway South, Suite 200   # TODO: real registered address
-    locality: Allen
-    region: TX
-    region_name: Texas
-    postal_code: "75013"
-    country: United States
+    street: " "   # TODO: real registered address
+    locality: " "
+    region: " "
+    region_name: ""
+    postal_code: ""
+    country: " "
     country_code: US
-    phone: "+1 (469) 555-0142"
-    phone_raw: "+14695550142"
+    phone: " "
+    phone_raw: " "
     email: hr@intellivraglobal.com
     hours: Mon-Fri, 8:00 AM - 7:00 PM CT
 
@@ -99,9 +99,9 @@ social:
 
 maps:
   # TODO: paste the real Google Maps embed URL for the head office
-  embed_url: https://www.google.com/maps?q=1301+Central+Expressway+South,+Allen,+TX+75013&output=embed
-  link_url: https://www.google.com/maps/search/?api=1&query=1301+Central+Expressway+South+Allen+TX+75013
-  title: Map showing the Intellivra Global head office in Allen, Texas
+  embed_url: ""
+  link_url: ""
+  title: " "
 
 legal:
   copyright_holder: Intellivra Global LLC
