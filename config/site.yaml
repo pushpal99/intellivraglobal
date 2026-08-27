@@ -89,10 +89,10 @@ offices:
 social:
   - name: LinkedIn
     key: linkedin
-    url: https://www.linkedin.com/company/intellivraglobal   # TODO: real profile
+    url: https://www.linkedin.com/company/intellivra-global   # TODO: real profile
   - name: X
     key: x
-    url: https://x.com/intellivra                            # TODO: real profile
+    url: https://x.com                           # TODO: real profile
   - name: GitHub
     key: github
     url: https://github.com/intellivraglobal                 # TODO: real profile
